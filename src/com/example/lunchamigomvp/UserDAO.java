@@ -30,7 +30,7 @@ public class UserDAO {
 		properties.setCreateDbIfNotExist(true);
 		properties.setProtocol("http");
 		//for production
-		properties.setHost("lunchamigo.iriscouch.com");
+		//properties.setHost("lunchamigo.iriscouch.com");
 		//for testing & developing
 		properties.setHost("localhost");
 		properties.setPort(5984);

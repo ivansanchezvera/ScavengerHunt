@@ -15,6 +15,8 @@ public class User {
 	private String token;
 	private String confirmed;
 	private Timestamp timestamp;
+	private String geolocationLatLong;
+	private boolean availability;
 	
 
 	public User(String email, String password, String token, String confirmed,
