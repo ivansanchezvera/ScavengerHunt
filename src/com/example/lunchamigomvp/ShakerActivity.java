@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.lunchamigomvp.ShakeDetector.OnShakeListener;
 
@@ -75,15 +74,7 @@ public class ShakerActivity extends Activity {
 				// TODO Auto-generated method stub
 				if (firstTime == true) {
 					findFriends();
-					Context context = getApplicationContext();
-					Double latitude = mLatitude;
-					Double longitude = mLongitude;
-					//Double s2 = userLocation.getLatitude();
-					//CharSequence text = s1.toString() + s2.toString();
-					CharSequence text = latitude.toString() + "," + longitude.toString();
-					int duration = Toast.LENGTH_SHORT;
-					Toast toast = Toast.makeText(context, text, duration);
-					toast.show();					
+				
 				}
 			}
 		});
@@ -144,8 +135,12 @@ public class ShakerActivity extends Activity {
 			}
 
 			public void onFinish() {
+				Double latitude = mLatitude;
+				Double longitude = mLongitude;
+
+				CharSequence text = latitude.toString() + "," + longitude.toString();
+					
 				bananaButton.setBackgroundResource(R.drawable.banana);
-				
 				locationManager.removeUpdates(locationListener);
 				startIntent();
 			}
