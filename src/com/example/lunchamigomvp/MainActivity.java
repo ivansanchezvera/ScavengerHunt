@@ -1,11 +1,11 @@
 package com.example.lunchamigomvp;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +18,7 @@ import android.widget.Toast;
 // todo
 // todo
 // use regex
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 	/* login */
 	
 	private String mEmail;
