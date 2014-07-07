@@ -29,6 +29,10 @@ public class ShakerActivity extends Activity {
 	private LocationManager locationManager;
 	private double mLongitude;
 	private double mLatitude;
+	
+	//For DB Management
+	private UserDAO userDAO;
+	private User amigoUser;
 
 	
 	@Override
@@ -122,6 +126,7 @@ public class ShakerActivity extends Activity {
 	}
 	
 	public void bananaButton(View view) {
+		//to make sure multiple shake can only be registered as once !
 		if (firstTime == true) {
 			findFriends();
 		}
@@ -144,12 +149,14 @@ public class ShakerActivity extends Activity {
 				CharSequence text = latitude.toString() + "," + longitude.toString();
 					
 				bananaButton.setBackgroundResource(R.drawable.banana);
+				//
 				locationManager.removeUpdates(locationListener);
 				startIntent();
 			}
 
 		}.start();
 		
+		//to make sure multiple shake can only be registered as once !
 		firstTime = false;
 
 	}
