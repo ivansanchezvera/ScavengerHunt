@@ -9,9 +9,13 @@
         android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+<<<<<<< HEAD
     <uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+=======
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+>>>>>>> 04f4c948edbc2533fd0bb3de7ab65bba2864da6b
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"

@@ -18,7 +18,10 @@ public class User {
 	private Timestamp timestamp;
 	private String geolocationLatLong;
 	private boolean availability;
+<<<<<<< HEAD
 	private Date availableUntil;
+=======
+>>>>>>> 04f4c948edbc2533fd0bb3de7ab65bba2864da6b
 	
 	public User(String email, String password, String token, String confirmed,
 			Timestamp timestamp) {

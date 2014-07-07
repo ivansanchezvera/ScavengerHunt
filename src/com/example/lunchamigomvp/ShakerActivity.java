@@ -1,9 +1,13 @@
 package com.example.lunchamigomvp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.Menu;
@@ -21,7 +25,11 @@ public class ShakerActivity extends Activity {
 	private Sensor mAccelerometer;
 	private Button bananaButton;
 	private Boolean firstTime; /* prevent toomuch timer */
-	
+	private LocationListener locationListener; /* gps */
+	private LocationManager locationManager;
+	private double mLongitude;
+	private double mLatitude;
+
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +40,33 @@ public class ShakerActivity extends Activity {
 		mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		bananaButton = (Button) findViewById(R.id.bananaButton);
 		firstTime = true;
+		
+		
+		// Acquire a reference to the system Location Manager
+		locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+
+		// Define a listener that responds to location updates
+		locationListener = new LocationListener() {
+		    public void onLocationChanged(Location location) {
+		      // Called when a new location is found by the network location provider.
+		      //makeUseOfNewLocation(location);
+				mLatitude = location.getLatitude();
+				mLongitude = location.getLongitude();
+
+		    }
+
+		    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+		    }
+
+		    public void onProviderEnabled(String provider) {}
+
+		    public void onProviderDisabled(String provider) {}
+		  };
+
+		// Register the listener with the Location Manager to receive location updates
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+		
 		mShakeDetector = new ShakeDetector(new OnShakeListener() {
 			
 			@Override
@@ -39,6 +74,7 @@ public class ShakerActivity extends Activity {
 				// TODO Auto-generated method stub
 				if (firstTime == true) {
 					findFriends();
+				
 				}
 			}
 		});
@@ -69,13 +105,16 @@ public class ShakerActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10, 0, locationListener);		
 		firstTime = true;
+		
 	}
 	
 	@Override
 	public void onPause() {
 		super.onPause();
 		mSensorManager.unregisterListener(mShakeDetector);
+		locationManager.removeUpdates(locationListener);
 
 	}
 	
@@ -88,14 +127,21 @@ public class ShakerActivity extends Activity {
 	/* todo server stuff */
 	public void findFriends() {
 		
-		CountDownTimer cdt = new CountDownTimer(3000, 1000) {
+		CountDownTimer cdt = new CountDownTimer(6000, 1000) {
 
 			public void onTick(long millisUntilFinished) {
 				bananaButton.setBackgroundResource(R.drawable.banana_half);
+
 			}
 
 			public void onFinish() {
+				Double latitude = mLatitude;
+				Double longitude = mLongitude;
+
+				CharSequence text = latitude.toString() + "," + longitude.toString();
+					
 				bananaButton.setBackgroundResource(R.drawable.banana);
+				locationManager.removeUpdates(locationListener);
 				startIntent();
 			}
 
