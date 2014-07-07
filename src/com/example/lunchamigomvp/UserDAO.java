@@ -31,37 +31,8 @@ public class UserDAO {
 	}
 	
 	protected void connectDatabase() {
-		/*
 		try{
-		dbClient = new CouchDbClientAndroid("db-amigos", true, "http", "lunchamigo.iriscouch.com", 5984, "admin", "steveBallmer1");
-		}catch(Exception e)
-		{
-			System.err.println("DB connection failed");
-			e.printStackTrace();
-		}
-		String maxine = "Harder, Better, Faster, Stronger";
-		String a = maxine;
-		*/
-		
-		CouchDbProperties properties = new CouchDbProperties();
-		properties.setDbName("db-amigos");
-		properties.setCreateDbIfNotExist(true);
-		properties.setProtocol("http");
-		//for production
-		//properties.setHost("lunchamigo.iriscouch.com");
-
-		//properties.setHost("54.79.24.208");
-		//http://54.79.24.208/
-		//for testing & developing
-		//properties.setHost("localhost");
-		properties.setHost("10.9.242.192");
-		//properties.setUsername("admin");
-		//properties.setPassword("steveBallmer1");
-		properties.setPort(5984);
-		//properties.setPort(17088);
-		
-		try{
-		dbClient = new CouchDbClientAndroid(properties);
+		dbClient = new CouchDbClientAndroid("raw/db/local.properties");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
