@@ -49,14 +49,12 @@ public class UserDAO {
 		properties.setProtocol("http");
 		//for production
 		//properties.setHost("lunchamigo.iriscouch.com");
-<<<<<<< HEAD
+
 		//properties.setHost("54.79.24.208");
 		//http://54.79.24.208/
-=======
->>>>>>> 04f4c948edbc2533fd0bb3de7ab65bba2864da6b
 		//for testing & developing
 		//properties.setHost("localhost");
-		properties.setHost("10.9.240.209");
+		properties.setHost("10.9.242.192");
 		//properties.setUsername("admin");
 		//properties.setPassword("steveBallmer1");
 		properties.setPort(5984);
