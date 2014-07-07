@@ -141,8 +141,7 @@ public class UserDAO {
 		}
 		//return null;
 	}
-	
-	
+
 	public boolean updateUser(User user) {
 		
 		Gson gson = new Gson();

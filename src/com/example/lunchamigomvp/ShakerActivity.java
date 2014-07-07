@@ -65,16 +65,16 @@ public class ShakerActivity extends Activity {
 		  };
 
 		// Register the listener with the Location Manager to receive location updates
-<<<<<<< HEAD
+
 		  if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
 		  {
 			  locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 		  }
-=======
+
 		if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
 		    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 		}
->>>>>>> 908cee7e8ae89a7644e0c1236ea6a77a0bd9fd4f
+
 		mShakeDetector = new ShakeDetector(new OnShakeListener() {
 			
 			@Override
@@ -113,14 +113,14 @@ public class ShakerActivity extends Activity {
 	public void onResume() {
 		super.onResume();
 		mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
-<<<<<<< HEAD
+
 		if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
 		{
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10, 0, locationListener);
-=======
+		}
 		if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {	
 			locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 10, 0, locationListener);		
->>>>>>> 908cee7e8ae89a7644e0c1236ea6a77a0bd9fd4f
+
 		}
 		firstTime = true;
 		
