@@ -1,5 +1,10 @@
 package com.example.lunchamigomvp;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.ExecutionException;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -8,12 +13,15 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.content.SharedPreferences;
 
 import com.example.lunchamigomvp.ShakeDetector.OnShakeListener;
 
@@ -33,6 +41,9 @@ public class ShakerActivity extends Activity {
 	//For DB Management
 	private UserDAO userDAO;
 	private User amigoUser;
+	
+	Boolean userUpdateOK;
+	
 
 	
 	@Override
@@ -158,8 +169,46 @@ public class ShakerActivity extends Activity {
 			public void onFinish() {
 				Double latitude = mLatitude;
 				Double longitude = mLongitude;
+				CharSequence geolocation = latitude.toString() + "," + longitude.toString();
+				
+				userDAO = new UserDAO();
+				//SharedPreferences sharedPrefrence = PreferenceManager.getDefaultSharedPreferences(this);
 
-				CharSequence text = latitude.toString() + "," + longitude.toString();
+				//String userName = sharedPreference.getString("emailKey",null);
+				amigoUser = userDAO.getUser(getSharedPreferences("authPrefs", MODE_PRIVATE).getString("emailKey",null));
+				//TODO
+				if(amigoUser == null){
+					finish();
+				}
+				
+				//Get Curren time
+				 Date dNow = new Date( ); // Instantiate a Date object
+				 Calendar cal = Calendar.getInstance();
+				 cal.setTime(dNow);
+				 cal.add(Calendar.HOUR, 1);
+				 dNow = cal.getTime();	
+				
+				// append the changes locally
+				amigoUser.setAvailability(true);
+				amigoUser.setGeolocationLatLong((String) geolocation);
+				amigoUser.setAvailableUntil(dNow);
+				
+				
+				// send the changes to the server
+				AsyncTask<User, Void, Boolean> updateUserToDB = new dbUpdateUserTask();
+				try {
+					userUpdateOK = updateUserToDB.execute(amigoUser).get();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				
+				
+				
 					
 				bananaButton.setBackgroundResource(R.drawable.banana);
 				//

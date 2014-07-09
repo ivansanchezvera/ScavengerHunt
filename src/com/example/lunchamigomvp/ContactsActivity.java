@@ -3,6 +3,8 @@ package com.example.lunchamigomvp;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
@@ -53,6 +55,7 @@ public class ContactsActivity extends ListActivity
 	//For access to CouchDB
 	private UserDAO userDAO;
 	private List<String> friendList;
+	private User amigoUser;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -168,7 +171,21 @@ public class ContactsActivity extends ListActivity
 			//Amigo is on the DB
 			if(userDAO.alreadyExistEmail(s))
 			{
-				trueAmigos.add(s);
+				//TODO
+				// if s get user availability or timestamp
+				//Time Now
+				Date dNow = new Date( ); // Instantiate a Date object
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(dNow);
+				dNow = cal.getTime();	
+				
+				amigoUser = userDAO.getUser(s);
+				//timestamp arimethic
+				// if the time now is before the available until, it's valid !
+				if( dNow.compareTo(amigoUser.getAvailableUntil()) < 0 ){
+					trueAmigos.add(s);
+				}
+				//Get from database
 			}
 		}
 		return trueAmigos;
