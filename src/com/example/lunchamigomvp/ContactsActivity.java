@@ -1,6 +1,11 @@
 package com.example.lunchamigomvp;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -138,6 +143,55 @@ public class ContactsActivity extends ListActivity
 	{
 		boolean amigosRetrieved = false;
 		boolean amigosOnFile = false;
+		
+		userDAO = new UserDAO();
+		List<String> amigos = getNameEmailDetails();
+		List<String> trueAmigos = new ArrayList<String>();
+		
+		String amigosListFilename = "amigosListFile"
+		
+		
+		
+		
+		File file = new File(amigosListFilename);
+		if(file.exists()){
+			FileInputStream fis = openFileInput(amigosListFilename);
+			ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+			DataInputStream in = new DataInputStream(bais);
+			while (fis.available() > 0) {
+			    String element = in.readUTF();
+			    //System.out.println(element);
+			    trueAmigos.add(element);
+			}
+		}      
+		//Do somehting
+		else{
+			for(String s:amigos)
+			{
+				//Amigo is on the DB
+				if(userDAO.alreadyExistEmail(s))
+				{
+					trueAmigos.add(s);
+				}
+			}
+
+			//to write in file
+			// write to byte array
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			DataOutputStream out = new DataOutputStream(baos);
+			for (String element : trueAmigos) {
+			    out.writeUTF(element);
+			}
+			byte[] bytes = baos.toByteArray();
+			
+			FileOutputStream fos = openFileOutput(amigosListFilename, Context.MODE_PRIVATE);
+			fos.write(bytes);
+			fos.close();
+		}
+		// Do something else.
+			
+		//If file does not exist
+		
 		//If file is not there create file with email list Otherwise do nothing or update it
 		/*
 		if(!amigosOnFile)
@@ -157,21 +211,9 @@ public class ContactsActivity extends ListActivity
 			
 		}*/
 		
-		userDAO = new UserDAO();
-		
-		List<String> amigos = getNameEmailDetails();
-		List<String> trueAmigos = new ArrayList<String>();
-		
-		
-		for(String s:amigos)
-		{
-			//Amigo is on the DB
-			if(userDAO.alreadyExistEmail(s))
-			{
-				trueAmigos.add(s);
-			}
-		}
 		return trueAmigos;
+		
+
 		
 	}
 	
