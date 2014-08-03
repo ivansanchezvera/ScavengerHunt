@@ -142,6 +142,24 @@ public class UserDAO {
 		//return null;
 	}
 
+	public List<User> getMultipleUsers(List<String> emailList)
+	{	
+		try {
+			//String token
+			//View needs to be created for lunch amigo!
+			List<User> list = dbClient.view("userViews/getUserByEmail")
+					.includeDocs(true)
+					.keys(emailList) //This is for multiple Keys
+					.query(User.class);
+			
+			return list;
+		} catch (Exception e) {
+			System.out.println(e.getStackTrace());
+			return null;
+		}
+		//return null;
+	}
+	
 	public boolean updateUser(User user) {
 		
 		Gson gson = new Gson();
