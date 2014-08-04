@@ -32,7 +32,7 @@ public class UserDAO {
 	
 	protected void connectDatabase() {
 		try{
-		dbClient = new CouchDbClientAndroid("raw/db/localx.properties");
+		dbClient = new CouchDbClientAndroid("raw/db/production.properties");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
