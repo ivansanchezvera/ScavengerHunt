@@ -215,3 +215,4 @@ pip-log.txt
 .mr.developer.cfg
 res/raw/db/localx.properties
 gen/android/support/v7/appcompat/R.java
+gen/android/support/v7/appcompat/R.java
