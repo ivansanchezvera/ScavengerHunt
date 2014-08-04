@@ -204,9 +204,21 @@ public class ContactsActivity extends ListActivity
 			userDAO = new UserDAO();
 			List<User> contactsAlreadyInPlatform = userDAO.getMultipleUsers(amigos);
 			
+			// if s get user availability or timestamp
+			//Time Now
+			Date dNow = new Date( ); // Instantiate a Date object
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(dNow);
+			dNow = cal.getTime();	
+			
+			//timestamp arimethic
+			// if the time now is before the available until, it's valid !
+			
 			for(User u: contactsAlreadyInPlatform)
 			{
-				trueAmigos.add(u.getEmail());
+				if( dNow.compareTo(u.getAvailableUntil()) < 0 ){
+					trueAmigos.add(u.getEmail());
+				}
 			}
 			
 			/*
@@ -218,6 +230,8 @@ public class ContactsActivity extends ListActivity
 				//Amigo is on the DB
 				if(userDAO.alreadyExistEmail(s))
 				{
+				
+				//Denis Code
 					//TODO
 					// if s get user availability or timestamp
 					//Time Now
@@ -233,6 +247,8 @@ public class ContactsActivity extends ListActivity
 						trueAmigos.add(s);
 					}
 					//Get from database
+					 * 
+					 *end of denis code
 				}
 			}
 			*end of deprecated code
