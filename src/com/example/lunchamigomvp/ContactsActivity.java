@@ -1,6 +1,11 @@
 package com.example.lunchamigomvp;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,6 +21,7 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.database.MatrixCursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.Gravity;
@@ -64,6 +70,7 @@ public class ContactsActivity extends ListActivity
 		//If contact file does not exist
 		
 		//Match Names before displaying
+		//This does the same several times, always on create!!! FIX THIS!
 		friendList = matchEmails();
 		if(friendList==null || friendList.size()<1)
 		{
@@ -108,11 +115,40 @@ public class ContactsActivity extends ListActivity
 		/*return new CursorLoader(this, ContactsContract.Data.CONTENT_URI,
 		        PROJECTION, SELECTION, null, null);*/
 		
-		   final String[] SELECTION_ARGS = new String[friendList.size()];
-		   friendList.toArray(SELECTION_ARGS);
-		    
-		return new CursorLoader(this, ContactsContract.Data.CONTENT_URI,
-		        PROJECTION, SELECTION,SELECTION_ARGS , null);
+		
+		//The selection should be an expression and selectionArgs should have as many elements as there are ? literal placeholders in selection.
+		
+		   //final String[] SELECTION_ARGS = new String[friendList.size()];
+		final String[] SELECTION_ARGS = new String[friendList.size()];
+		  friendList.toArray(SELECTION_ARGS);
+		
+		   
+		  // Loader<Cursor> cursor = new CursorLoader(this, ContactsContract.Data.CONTENT_URI,
+		//	        PROJECTION, SELECTION,SELECTION_ARGS , null);
+		
+		// This is the select criteria
+		String SELECTION2 = "((" + 
+		    ContactsContract.Data.DISPLAY_NAME + " NOTNULL) AND (" +
+		    ContactsContract.Data.DISPLAY_NAME + " != '' ) AND (" + 
+		    ContactsContract.Data.DATA1 + " IN ("+ makePlaceholders(friendList.size()) +") ))";
+
+		   return new CursorLoader(this, ContactsContract.Data.CONTENT_URI,
+		        PROJECTION, SELECTION2,SELECTION_ARGS , null);
+		        
+	}
+	
+	String makePlaceholders(int len) {
+	    if (len < 1) {
+	        // It will lead to an invalid query anyway ..
+	        throw new RuntimeException("No placeholders");
+	    } else {
+	        StringBuilder sb = new StringBuilder(len * 2 - 1);
+	        sb.append("?");
+	        for (int i = 1; i < len; i++) {
+	            sb.append(",?");
+	        }
+	        return sb.toString();
+	    }
 	}
 	
 	// Called when a previously created loader has finished loading
@@ -141,6 +177,88 @@ public class ContactsActivity extends ListActivity
 	{
 		boolean amigosRetrieved = false;
 		boolean amigosOnFile = false;
+		
+		userDAO = new UserDAO();
+		List<String> amigos = getNameEmailDetails();
+		List<String> trueAmigos = new ArrayList<String>();
+		
+		String amigosListFilename = "amigosListFile";
+		
+		try{
+		File file = new File(amigosListFilename);
+		//If file exists
+		if(file.exists()){
+			FileInputStream fis = openFileInput(amigosListFilename);
+			byte[] bytes = null;
+			ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+			DataInputStream in = new DataInputStream(bais);
+			while (fis.available() > 0) {
+			    String element = in.readUTF();
+			    //System.out.println(element);
+			    trueAmigos.add(element);
+			}
+		}      
+		//Do something if file does not exists
+		else{
+			
+			userDAO = new UserDAO();
+			List<User> contactsAlreadyInPlatform = userDAO.getMultipleUsers(amigos);
+			
+			for(User u: contactsAlreadyInPlatform)
+			{
+				trueAmigos.add(u.getEmail());
+			}
+			
+			/*
+			 * 
+			 * Code deprecated, new code bring all users in one single code
+			 
+			for(String s:amigos)
+			{
+				//Amigo is on the DB
+				if(userDAO.alreadyExistEmail(s))
+				{
+					//TODO
+					// if s get user availability or timestamp
+					//Time Now
+					Date dNow = new Date( ); // Instantiate a Date object
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(dNow);
+					dNow = cal.getTime();	
+					
+					amigoUser = userDAO.getUser(s);
+					//timestamp arimethic
+					// if the time now is before the available until, it's valid !
+					if( dNow.compareTo(amigoUser.getAvailableUntil()) < 0 ){
+						trueAmigos.add(s);
+					}
+					//Get from database
+				}
+			}
+			*end of deprecated code
+			*/
+
+			//to write in file
+			// write to byte array
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			DataOutputStream out = new DataOutputStream(baos);
+			for (String element : trueAmigos) {
+			    out.writeUTF(element);
+			}
+			byte[] bytes = baos.toByteArray();
+			
+			FileOutputStream fos = openFileOutput(amigosListFilename, Context.MODE_PRIVATE);
+			fos.write(bytes);
+			fos.close();
+		}
+		}catch(Exception ex)
+		{
+			ex.printStackTrace();
+		}
+		// Do something else.
+			
+		//If file does not exist
+		
 		//If file is not there create file with email list Otherwise do nothing or update it
 		/*
 		if(!amigosOnFile)
@@ -160,35 +278,12 @@ public class ContactsActivity extends ListActivity
 			
 		}*/
 		
-		userDAO = new UserDAO();
-		
-		List<String> amigos = getNameEmailDetails();
-		List<String> trueAmigos = new ArrayList<String>();
-		
-		
-		for(String s:amigos)
-		{
-			//Amigo is on the DB
-			if(userDAO.alreadyExistEmail(s))
-			{
-				//TODO
-				// if s get user availability or timestamp
-				//Time Now
-				Date dNow = new Date( ); // Instantiate a Date object
-				Calendar cal = Calendar.getInstance();
-				cal.setTime(dNow);
-				dNow = cal.getTime();	
-				
-				amigoUser = userDAO.getUser(s);
-				//timestamp arimethic
-				// if the time now is before the available until, it's valid !
-				if( dNow.compareTo(amigoUser.getAvailableUntil()) < 0 ){
-					trueAmigos.add(s);
-				}
-				//Get from database
-			}
-		}
+
+
+
 		return trueAmigos;
+		
+
 		
 	}
 	
