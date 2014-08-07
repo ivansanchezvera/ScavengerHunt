@@ -23,12 +23,9 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
-<<<<<<< HEAD
 import android.database.MatrixCursor;
 import android.location.Location;
-=======
 import android.os.AsyncTask;
->>>>>>> origin/master
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.Gravity;
