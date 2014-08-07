@@ -17,13 +17,18 @@ import java.util.List;
 import android.app.ActionBar.LayoutParams;
 import android.app.ListActivity;
 import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+<<<<<<< HEAD
 import android.database.MatrixCursor;
 import android.location.Location;
+=======
+import android.os.AsyncTask;
+>>>>>>> origin/master
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.Gravity;
@@ -77,7 +82,14 @@ public class ContactsActivity extends ListActivity
 		
 		//Match Names before displaying
 		//This does the same several times, always on create!!! FIX THIS!
-		friendList = matchEmails();
+		
+		//Instead of the normal function I will try to use an AsyncLoaderTask
+		//friendList = matchEmails();
+		friendList = null; 
+		AsyncTaskLoader<List<String>> loadEmailsAndMatchThem = new MatchEmailsAsyncTask(this);
+		friendList = loadEmailsAndMatchThem.loadInBackground();
+		
+		
 		if(friendList==null || friendList.size()<1)
 		{
 			Toast.makeText(this, "Fuck no amigos to show", Toast.LENGTH_LONG).show();
@@ -143,7 +155,7 @@ public class ContactsActivity extends ListActivity
 		        
 	}
 	
-	String makePlaceholders(int len) {
+	private String makePlaceholders(int len) {
 	    if (len < 1) {
 	        // It will lead to an invalid query anyway ..
 	        throw new RuntimeException("No placeholders");
@@ -241,39 +253,6 @@ public class ContactsActivity extends ListActivity
 					trueAmigos.add(u.getEmail());
 				}
 			}
-			
-			/*
-			 * 
-			 * Code deprecated, new code bring all users in one single code
-			 
-			for(String s:amigos)
-			{
-				//Amigo is on the DB
-				if(userDAO.alreadyExistEmail(s))
-				{
-				
-				//Denis Code
-					//TODO
-					// if s get user availability or timestamp
-					//Time Now
-					Date dNow = new Date( ); // Instantiate a Date object
-					Calendar cal = Calendar.getInstance();
-					cal.setTime(dNow);
-					dNow = cal.getTime();	
-					
-					amigoUser = userDAO.getUser(s);
-					//timestamp arimethic
-					// if the time now is before the available until, it's valid !
-					if( dNow.compareTo(amigoUser.getAvailableUntil()) < 0 ){
-						trueAmigos.add(s);
-					}
-					//Get from database
-					 * 
-					 *end of denis code
-				}
-			}
-			*end of deprecated code
-			*/
 
 			//to write in file
 			// write to byte array
@@ -292,6 +271,7 @@ public class ContactsActivity extends ListActivity
 		{
 			ex.printStackTrace();
 		}
+		
 		// Do something else.
 			
 		//If file does not exist
@@ -314,14 +294,7 @@ public class ContactsActivity extends ListActivity
 		}else{
 			
 		}*/
-		
-
-
-
 		return trueAmigos;
-		
-
-		
 	}
 	
 	//For retrieving data from DB
