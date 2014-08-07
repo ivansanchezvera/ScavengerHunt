@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
 	private User amigoUser;
 	
 	SharedPreferences sharedpreferences;
-	
+	//TODO make this private I guess.
 	public static final String AUTHPREFS = "authPrefs" ;
 	public static final String EMAIL = "emailKey"; 
 	

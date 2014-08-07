@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 
+
 import android.app.ActionBar.LayoutParams;
 import android.app.ListActivity;
 import android.app.LoaderManager;
@@ -22,6 +23,7 @@ import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
 import android.database.MatrixCursor;
+import android.location.Location;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.Gravity;
@@ -62,6 +64,10 @@ public class ContactsActivity extends ListActivity
 	private UserDAO userDAO;
 	private List<String> friendList;
 	private User amigoUser;
+	
+	//for geolocation
+	private static final String AUTHPREFS = "authPrefs" ;
+	private static final String GEOLOCATIONKEY = "geoKey"; 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -203,20 +209,35 @@ public class ContactsActivity extends ListActivity
 			
 			userDAO = new UserDAO();
 			List<User> contactsAlreadyInPlatform = userDAO.getMultipleUsers(amigos);
+			float[] results; // initialized for calculating distance
 			
 			// if s get user availability or timestamp
 			//Time Now
 			Date dNow = new Date( ); // Instantiate a Date object
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(dNow);
-			dNow = cal.getTime();	
+			dNow = cal.getTime();
+			
+			String userLocation = getSharedPreferences(AUTHPREFS, MODE_PRIVATE).getString(GEOLOCATIONKEY,null);
+			String[] userLatLong = userLocation.split(",");
+			double distance;
+			//TODO
+			//access the sharedpreference
 			
 			//timestamp arimethic
+			// use shared prefrence of previous one to get user location don't call location manager twice
 			// if the time now is before the available until, it's valid !
-			
+
 			for(User u: contactsAlreadyInPlatform)
 			{
-				if( dNow.compareTo(u.getAvailableUntil()) < 0 ){
+				String amigoLocation = u.getGeolocationLatLong();
+				String[] amigoLatLong = amigoLocation.split(",");
+				
+				distance = haversine( Double.parseDouble(userLatLong[0]), Double.
+						parseDouble(userLatLong[1]), Double.parseDouble(amigoLatLong[0]), 
+						Double.parseDouble(amigoLatLong[1]));
+				//add another if statement
+				if( dNow.compareTo(u.getAvailableUntil()) < 0 && distance < 1){
 					trueAmigos.add(u.getEmail());
 				}
 			}
@@ -338,5 +359,18 @@ public class ContactsActivity extends ListActivity
 
 	    cur.close();
 	    return emlRecs;
+	}
+	
+	private double haversine(
+	        double lat1, double lng1, double lat2, double lng2) {
+	    int r = 6371; // average radius of the earth in km
+	    double dLat = Math.toRadians(lat2 - lat1);
+	    double dLon = Math.toRadians(lng2 - lng1);
+	    double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+	       Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) 
+	      * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+	    double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	    double d = r * c;
+	    return d;
 	}
 }

@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 
 import com.example.lunchamigomvp.ShakeDetector.OnShakeListener;
 
@@ -42,6 +43,12 @@ public class ShakerActivity extends Activity {
 	private UserDAO userDAO;
 	private User amigoUser;
 	
+	//For SharedPrefrence(Gelocationlatlong) (persisting state ofu users between activities
+	SharedPreferences sharedpreferences;
+	private static final String AUTHPREFS = "authPrefs" ;
+	private static final String GEOLOCATIONKEY = "geoKey"; 
+	private CharSequence geoLocation;
+	
 	Boolean userUpdateOK;
 	
 
@@ -55,6 +62,9 @@ public class ShakerActivity extends Activity {
 		mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		bananaButton = (Button) findViewById(R.id.bananaButton);
 		firstTime = true;
+		
+		//store the geolocation on this
+		sharedpreferences = getSharedPreferences(AUTHPREFS, Context.MODE_PRIVATE);
 		
 		
 		// Acquire a reference to the system Location Manager
@@ -101,6 +111,8 @@ public class ShakerActivity extends Activity {
 				}
 			}
 		});
+		
+
 		
 	}
 
@@ -169,7 +181,7 @@ public class ShakerActivity extends Activity {
 			public void onFinish() {
 				Double latitude = mLatitude;
 				Double longitude = mLongitude;
-				CharSequence geolocation = latitude.toString() + "," + longitude.toString();
+			    geoLocation = latitude.toString() + "," + longitude.toString();
 				
 				userDAO = new UserDAO();
 				//SharedPreferences sharedPrefrence = PreferenceManager.getDefaultSharedPreferences(this);
@@ -190,8 +202,9 @@ public class ShakerActivity extends Activity {
 				
 				// append the changes locally
 				amigoUser.setAvailability(true);
-				amigoUser.setGeolocationLatLong((String) geolocation);
+				amigoUser.setGeolocationLatLong((String) geoLocation);
 				amigoUser.setAvailableUntil(dNow);
+				storeGeoLocation();
 				
 				
 				// send the changes to the server
@@ -227,6 +240,13 @@ public class ShakerActivity extends Activity {
 	public void startIntent() {
 		Intent intent = new Intent(this, ContactsActivity.class);
 		startActivity(intent);
+	}
+	
+	
+	private void storeGeoLocation() {
+		Editor editor = sharedpreferences.edit();
+	    editor.putString(GEOLOCATIONKEY, (String) geoLocation);
+	    editor.commit();
 	}
 	
 	
