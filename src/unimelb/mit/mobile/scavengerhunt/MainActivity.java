@@ -1,9 +1,11 @@
-package com.example.lunchamigomvp;
+package unimelb.mit.mobile.scavengerhunt;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
+
+import unimelb.mit.mobile.scavengerhunt.R;
 
 import android.app.Activity;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.example.lunchamigomvp;
+package unimelb.mit.mobile.scavengerhunt;
 
 import java.sql.Timestamp;
 import java.util.Calendar;

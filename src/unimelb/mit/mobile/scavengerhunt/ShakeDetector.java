@@ -1,4 +1,4 @@
-package com.example.lunchamigomvp;
+package unimelb.mit.mobile.scavengerhunt;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;

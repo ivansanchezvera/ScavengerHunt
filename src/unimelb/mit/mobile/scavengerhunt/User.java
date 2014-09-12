@@ -1,4 +1,4 @@
-package com.example.lunchamigomvp;
+package unimelb.mit.mobile.scavengerhunt;
 
 import java.io.IOException;
 import java.io.Writer;

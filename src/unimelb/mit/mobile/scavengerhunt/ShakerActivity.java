@@ -1,9 +1,12 @@
-package com.example.lunchamigomvp;
+package unimelb.mit.mobile.scavengerhunt;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ExecutionException;
+
+import unimelb.mit.mobile.scavengerhunt.R;
+import unimelb.mit.mobile.scavengerhunt.ShakeDetector.OnShakeListener;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,7 +27,6 @@ import android.widget.Button;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import com.example.lunchamigomvp.ShakeDetector.OnShakeListener;
 
 public class ShakerActivity extends Activity {
 	
