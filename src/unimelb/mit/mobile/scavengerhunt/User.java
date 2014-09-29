@@ -19,6 +19,7 @@ public class User {
 	private String geolocationLatLong;
 	private boolean availability;
 	private Date availableUntil;
+	private String deviceId;
 	
 	public User(String email, String password, String token, String confirmed,
 			Timestamp timestamp) {
@@ -157,5 +158,15 @@ public class User {
 	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
 	}
+
+	public String getDeviceId() {
+		return deviceId;
+	}
+
+	public void setDeviceId(String deviceId) {
+		this.deviceId = deviceId;
+	}
+	
+	
 
 }
