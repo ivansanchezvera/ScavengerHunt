@@ -1,9 +1,11 @@
 package unimelb.mit.mobile.scavengerhunt;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class Message {
 
+	//Information to persist
 	private String _id;
 	private String _rev;
 	private String message;
@@ -11,6 +13,7 @@ public class Message {
 	private String receiver;
 	private String status;
 	private String location;
+	private Timestamp timestamp;
 	private List<String> hints;
 	
 	public Message() {
@@ -18,21 +21,33 @@ public class Message {
 	}
 	
 	
-
+//--Constructors------------
+//--Partial Basic constructor
 	public Message(String message, String sender, String receiver,
-			String status, String location, List<String> hints) {
+			String status, String location, Timestamp timestamp) {
 		this.message = message;
 		this.sender = sender;
 		this.receiver = receiver;
 		this.status = status;
 		this.location = location;
+		this.timestamp = timestamp;
+	}
+	
+//--Complete Java constructor
+	public Message(String message, String sender, String receiver,
+			String status, String location, Timestamp timestamp, List<String> hints) {
+		this.message = message;
+		this.sender = sender;
+		this.receiver = receiver;
+		this.status = status;
+		this.location = location;
+		this.timestamp = timestamp;
 		this.hints = hints;
 	}
 
-
-
+//--Constructor with fields for CouchDB
 	public Message(String _id, String _rev, String message, String sender,
-			String receiver, String status, String location, List<String> hints) {
+			String receiver, String status, String location, Timestamp timestamp, List<String> hints) {
 		this._id = _id;
 		this._rev = _rev;
 		this.message = message;
@@ -40,11 +55,11 @@ public class Message {
 		this.receiver = receiver;
 		this.status = status;
 		this.location = location;
+		this.timestamp = timestamp;
 		this.hints = hints;
 	}
 
-
-
+//------Getters and Setters----------
 	public String get_id() {
 		return _id;
 	}
@@ -100,6 +115,14 @@ public class Message {
 	public void setLocation(String location) {
 		this.location = location;
 	}
+	
+	public Timestamp getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
+	}
 
 	public List<String> getHints() {
 		return hints;
@@ -109,6 +132,4 @@ public class Message {
 		this.hints = hints;
 	}
 	
-	
-
 }
