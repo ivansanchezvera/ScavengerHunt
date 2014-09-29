@@ -219,3 +219,6 @@ gen/android/support/v7/appcompat/R.java
 res/raw/db/localx.properties
 gen/android/support/v7/appcompat/R.java
 res/raw/db/localx.properties
+
+#Android
+gen/unimelb/mit/mobile/scavengerhunt/R.java
