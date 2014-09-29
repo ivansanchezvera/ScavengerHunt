@@ -39,7 +39,7 @@ public class MainActivity extends Activity {
 	private Boolean isValid;
 	
 	//For DB Management
-	private UserDAO userDAO;
+	private MessageDAO userDAO;
 	private User amigoUser;
 	
 	SharedPreferences sharedpreferences;
