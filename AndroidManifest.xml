@@ -10,7 +10,7 @@
 	<uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-<<<<<<< HEAD
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /><uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -20,10 +20,8 @@
     		android:protectionLevel="signature" />
  	<uses-permission android:name="unimelb.mit.mobile.scavengerhunt.C2D_MESSAGE" />
    
-=======
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
->>>>>>> b6cf940ce8c2a50f734f0cfe2a1b44121e44f499
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -38,7 +36,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<<<<<<< HEAD
         
         <meta-data android:name="com.google.android.gms.version"
            android:value="@integer/google_play_services_version" />
@@ -53,7 +50,6 @@
         </receiver>
         <service android:name=".GcmIntentService" />
         
-=======
         <activity
             android:name=".ShakerActivity"
             android:label="@string/app_name" >
@@ -66,7 +62,6 @@
             android:name=".CreateMessage"
             android:label="@string/title_activity_create_message" >
         </activity>
->>>>>>> b6cf940ce8c2a50f734f0cfe2a1b44121e44f499
     </application>
 
 </manifest>
