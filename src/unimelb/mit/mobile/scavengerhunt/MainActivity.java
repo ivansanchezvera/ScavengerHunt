@@ -106,7 +106,7 @@ public class MainActivity extends Activity {
 	   // userDAO = new UserDAO();
 	    
 	    /****************************************************/
-	    if (checkPlayServices()) {
+	    if (checkPlayServices() && isLoggedIn) {
 	        gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
 	              regid = getRegistrationId(getApplicationContext());
 	               
