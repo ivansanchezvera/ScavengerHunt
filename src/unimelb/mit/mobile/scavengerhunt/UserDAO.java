@@ -6,7 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.lightcouch.CouchDbClientAndroid;
+import org.lightcouch.CouchDbException;
 import org.lightcouch.CouchDbProperties;
+import org.lightcouch.DocumentConflictException;
+import org.lightcouch.NoDocumentException;
 
 import org.lightcouch.Response;
 
@@ -153,7 +156,17 @@ public class UserDAO {
 					.query(User.class);
 			
 			return list;
-		} catch (Exception e) {
+		} 
+		catch(NoDocumentException e1){
+			return null;
+		}
+		catch(DocumentConflictException e2){
+			return null;
+		}
+		catch(CouchDbException e3){
+			return null;
+		}
+		catch (Exception e) {			
 			System.out.println(e.getStackTrace());
 			return null;
 		}
