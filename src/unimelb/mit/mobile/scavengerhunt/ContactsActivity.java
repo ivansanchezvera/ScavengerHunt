@@ -47,7 +47,8 @@ public class ContactsActivity extends ListActivity
 	
 	// These are the Contacts rows that we will retrieve
 	static final String[] PROJECTION = new String[] {ContactsContract.Data._ID,
-	    ContactsContract.Data.DISPLAY_NAME};
+	    ContactsContract.Data.DISPLAY_NAME,
+	    ContactsContract.Data.DATA1};
 	
 	// This is the select criteria
 	/*
@@ -111,7 +112,7 @@ public class ContactsActivity extends ListActivity
 			root.addView(progressBar);
 			
 			// For the cursor adapter, specify which columns go into which views
-			String[] fromColumns = {ContactsContract.Data.DISPLAY_NAME};
+			String[] fromColumns = {ContactsContract.Data.DISPLAY_NAME, ContactsContract.Data.DATA1};
 			int[] toViews = {android.R.id.text1}; // The TextView in simple_list_item_1
 			
 			// Create an empty adapter we will use to display the loaded data.
@@ -157,6 +158,8 @@ public class ContactsActivity extends ListActivity
 		        
 	}
 	
+	//This method helps to show the contacts in the loader 
+	//Basically transforms a little bit the data so it can be shown in contact list in query (selection criteria).
 	private String makePlaceholders(int len) {
 	    if (len < 1) {
 	        // It will lead to an invalid query anyway ..
@@ -186,159 +189,29 @@ public class ContactsActivity extends ListActivity
 		mAdapter.swapCursor(null);
 	}
 	
+	//This is used when you click on a contact, neet to send info to next activity (send message)/
+	//Info required is basically User Id and Recipient ID
 	@Override 
 	public void onListItemClick(ListView l, View v, int position, long id) {
 	// Do something when a list item is clicked
+        
+		super.onListItemClick(l, v, position, id);
+
+        Cursor cursor = (Cursor) mAdapter.getItem(position);
+        String selection = cursor.getString(1);
+        String selection2 = cursor.getString(2);
+        Toast.makeText(this, "You selected: " + selection,Toast.LENGTH_LONG).show(); 
+        Toast.makeText(this, "Email: " + selection2,Toast.LENGTH_LONG).show(); 
+		
 		Object contactItem = getListView().getItemIdAtPosition(position);
+		//String item = (String) getListAdapter().getItem(position);
+		//Object o = getListAdapter().getItem(position);
 		Intent intent = new Intent(this, CreateMessage.class);
 		intent.putExtra(recipientEmail, "email@abc.com" );
 		startActivity(intent);
 	}
 	
-	//Function to call view and match
-	//Function should be on the foreground...
-	public List<String> matchEmails()
-	{
-		boolean amigosRetrieved = false;
-		boolean amigosOnFile = false;
-		
-		userDAO = new UserDAO();
-		List<String> amigos = getNameEmailDetails();
-		List<String> trueAmigos = new ArrayList<String>();
-		
-		String amigosListFilename = "amigosListFile";
-		
-		try{
-		File file = new File(amigosListFilename);
-		//If file exists
-		if(file.exists()){
-			FileInputStream fis = openFileInput(amigosListFilename);
-			byte[] bytes = null;
-			ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-			DataInputStream in = new DataInputStream(bais);
-			while (fis.available() > 0) {
-			    String element = in.readUTF();
-			    //System.out.println(element);
-			    trueAmigos.add(element);
-			}
-		}      
-		//Do something if file does not exists
-		else{
-			
-			userDAO = new UserDAO();
-			List<User> contactsAlreadyInPlatform = userDAO.getMultipleUsers(amigos);
-			contactsAlreadyInPlatform = userDAO.getMultipleUsers2(amigos);
-			float[] results; // initialized for calculating distance
-			
-			// if s get user availability or timestamp
-			//Time Now
-			Date dNow = new Date( ); // Instantiate a Date object
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(dNow);
-			dNow = cal.getTime();
-			
-			String userLocation = getSharedPreferences(AUTHPREFS, MODE_PRIVATE).getString(GEOLOCATIONKEY,null);
-			String[] userLatLong = userLocation.split(",");
-			double distance;
-			//TODO
-			//access the sharedpreference
-			
-			//timestamp arimethic
-			// use shared prefrence of previous one to get user location don't call location manager twice
-			// if the time now is before the available until, it's valid !
-
-			for(User u: contactsAlreadyInPlatform)
-			{
-				//String amigoLocation = u.getGeolocationLatLong();
-				//String[] amigoLatLong = amigoLocation.split(",");
-				
-				//distance = haversine( Double.parseDouble(userLatLong[0]), Double.parseDouble(userLatLong[1]), Double.parseDouble(amigoLatLong[0]), Double.parseDouble(amigoLatLong[1]));
-				//add another if statement
-				//if( dNow.compareTo(u.getAvailableUntil()) < 0 && distance < 1){
-					trueAmigos.add(u.getEmail());
-				//}
-			}
-
-			//to write in file
-			// write to byte array
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			DataOutputStream out = new DataOutputStream(baos);
-			for (String element : trueAmigos) {
-			    out.writeUTF(element);
-			}
-			byte[] bytes = baos.toByteArray();
-			
-			FileOutputStream fos = openFileOutput(amigosListFilename, Context.MODE_PRIVATE);
-			fos.write(bytes);
-			fos.close();
-		}
-		}catch(Exception ex)
-		{
-			ex.printStackTrace();
-		}
-		
-		// Do something else.
-			
-		//If file does not exist
-		
-		//If file is not there create file with email list Otherwise do nothing or update it
-		/*
-		if(!amigosOnFile)
-		{
-		File file = new File(this.getFilesDir(), "lunchAmigoList");
-		
-		FileOutputStream outputStream;
-
-		try {
-		  outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
-		  outputStream.write(string.getBytes());
-		  outputStream.close();
-		} catch (Exception e) {
-		  e.printStackTrace();
-		}
-		}else{
-			
-		}*/
-		return trueAmigos;
-	}
-	
-	//For retrieving data from DB
-	public ArrayList<String> getNameEmailDetails() {
-	    ArrayList<String> emlRecs = new ArrayList<String>();
-	    HashSet<String> emlRecsHS = new HashSet<String>();
-	    Context context = this;
-	    ContentResolver cr = context.getContentResolver();
-	    String[] PROJECTION = new String[] { ContactsContract.RawContacts._ID, 
-	            ContactsContract.Contacts.DISPLAY_NAME,
-	            ContactsContract.Contacts.PHOTO_ID,
-	            ContactsContract.CommonDataKinds.Email.DATA, 
-	            ContactsContract.CommonDataKinds.Photo.CONTACT_ID };
-	    String order = "CASE WHEN " 
-	            + ContactsContract.Contacts.DISPLAY_NAME 
-	            + " NOT LIKE '%@%' THEN 1 ELSE 2 END, " 
-	            + ContactsContract.Contacts.DISPLAY_NAME 
-	            + ", " 
-	            + ContactsContract.CommonDataKinds.Email.DATA
-	            + " COLLATE NOCASE";
-	    String filter = ContactsContract.CommonDataKinds.Email.DATA + " NOT LIKE ''";
-	    Cursor cur = cr.query(ContactsContract.CommonDataKinds.Email.CONTENT_URI, PROJECTION, filter, null, order);
-	    if (cur.moveToFirst()) {
-	        do {
-	            // names comes in hand sometimes
-	            String name = cur.getString(1);
-	            String emlAddr = cur.getString(3);
-
-	            // keep unique only
-	            if (emlRecsHS.add(emlAddr.toLowerCase())) {
-	                emlRecs.add(emlAddr);
-	            }
-	        } while (cur.moveToNext());
-	    }
-
-	    cur.close();
-	    return emlRecs;
-	}
-	
+	//Someone Elses code - Document this
 	private double haversine(
 	        double lat1, double lng1, double lat2, double lng2) {
 	    int r = 6371; // average radius of the earth in km
