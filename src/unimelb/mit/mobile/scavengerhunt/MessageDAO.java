@@ -34,6 +34,7 @@ public class MessageDAO {
 	protected void connectDatabase() {
 		try{
 		dbClient = new CouchDbClientAndroid("raw/db/localx.properties");
+		//dbClient = new CouchDbClientAndroid("localx.properties");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
