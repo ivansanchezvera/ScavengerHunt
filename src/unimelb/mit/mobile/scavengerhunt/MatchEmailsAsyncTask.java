@@ -64,8 +64,9 @@ public class MatchEmailsAsyncTask extends AsyncTaskLoader<List<String>>{
 		//Do something if file does not exists
 		else{
 			
-			userDAO = new UserDAO();
+			//userDAO = new UserDAO();
 			List<User> contactsAlreadyInPlatform = userDAO.getMultipleUsers(amigos);
+			//contactsAlreadyInPlatform = userDAO.getMultipleUsers2(amigos);
 			
 			// if s get user availability or timestamp
 			//Time Now

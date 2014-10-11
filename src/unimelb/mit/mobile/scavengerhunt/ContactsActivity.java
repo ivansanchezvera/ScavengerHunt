@@ -21,10 +21,12 @@ import android.content.AsyncTaskLoader;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.location.Location;
+import android.nfc.NfcAdapter.CreateBeamUrisCallback;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -70,6 +72,9 @@ public class ContactsActivity extends ListActivity
 	//for geolocation
 	private static final String AUTHPREFS = "authPrefs" ;
 	private static final String GEOLOCATIONKEY = "geoKey"; 
+	
+	//To pass recipient email in message to next activity (message activity).
+	private String recipientEmail;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -184,6 +189,10 @@ public class ContactsActivity extends ListActivity
 	@Override 
 	public void onListItemClick(ListView l, View v, int position, long id) {
 	// Do something when a list item is clicked
+		Object contactItem = getListView().getItemIdAtPosition(position);
+		Intent intent = new Intent(this, CreateMessage.class);
+		intent.putExtra(recipientEmail, "email@abc.com" );
+		startActivity(intent);
 	}
 	
 	//Function to call view and match
@@ -218,6 +227,7 @@ public class ContactsActivity extends ListActivity
 			
 			userDAO = new UserDAO();
 			List<User> contactsAlreadyInPlatform = userDAO.getMultipleUsers(amigos);
+			contactsAlreadyInPlatform = userDAO.getMultipleUsers2(amigos);
 			float[] results; // initialized for calculating distance
 			
 			// if s get user availability or timestamp
@@ -239,16 +249,14 @@ public class ContactsActivity extends ListActivity
 
 			for(User u: contactsAlreadyInPlatform)
 			{
-				String amigoLocation = u.getGeolocationLatLong();
-				String[] amigoLatLong = amigoLocation.split(",");
+				//String amigoLocation = u.getGeolocationLatLong();
+				//String[] amigoLatLong = amigoLocation.split(",");
 				
-				distance = haversine( Double.parseDouble(userLatLong[0]), Double.
-						parseDouble(userLatLong[1]), Double.parseDouble(amigoLatLong[0]), 
-						Double.parseDouble(amigoLatLong[1]));
+				//distance = haversine( Double.parseDouble(userLatLong[0]), Double.parseDouble(userLatLong[1]), Double.parseDouble(amigoLatLong[0]), Double.parseDouble(amigoLatLong[1]));
 				//add another if statement
-				if( dNow.compareTo(u.getAvailableUntil()) < 0 && distance < 1){
+				//if( dNow.compareTo(u.getAvailableUntil()) < 0 && distance < 1){
 					trueAmigos.add(u.getEmail());
-				}
+				//}
 			}
 
 			//to write in file
