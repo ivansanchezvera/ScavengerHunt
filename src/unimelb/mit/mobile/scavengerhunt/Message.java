@@ -11,7 +11,8 @@ public class Message {
 	private String message;
 	private String sender;
 	private String receiver;
-	private String status;
+	//private String status;
+	private MessageState status;
 	private String location;
 	private Timestamp timestamp;
 	private List<String> hints;
@@ -24,7 +25,7 @@ public class Message {
 //--Constructors------------
 //--Partial Basic constructor
 	public Message(String message, String sender, String receiver,
-			String status, String location, Timestamp timestamp) {
+			MessageState status, String location, Timestamp timestamp) {
 		this.message = message;
 		this.sender = sender;
 		this.receiver = receiver;
@@ -35,7 +36,7 @@ public class Message {
 	
 //--Complete Java constructor
 	public Message(String message, String sender, String receiver,
-			String status, String location, Timestamp timestamp, List<String> hints) {
+			MessageState status, String location, Timestamp timestamp, List<String> hints) {
 		this.message = message;
 		this.sender = sender;
 		this.receiver = receiver;
@@ -47,7 +48,7 @@ public class Message {
 
 //--Constructor with fields for CouchDB
 	public Message(String _id, String _rev, String message, String sender,
-			String receiver, String status, String location, Timestamp timestamp, List<String> hints) {
+			String receiver, MessageState status, String location, Timestamp timestamp, List<String> hints) {
 		this._id = _id;
 		this._rev = _rev;
 		this.message = message;
@@ -100,11 +101,11 @@ public class Message {
 		this.receiver = receiver;
 	}
 
-	public String getStatus() {
+	public MessageState getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(MessageState status) {
 		this.status = status;
 	}
 

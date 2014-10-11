@@ -49,9 +49,8 @@ public class MessageDAO {
 		Date myDate = c.getTime();
 		try {
 			Timestamp stamp = new Timestamp(myDate.getTime());
-			String status = "unread";
 			
-			Message m = new Message(message, sender, receiver, status, location, stamp); 
+			Message m = new Message(message, sender, receiver, MessageState.Unread, location, stamp); 
 
 			// Cast the new object to JSON file to be saved in the DB
 			json = gson.toJson(m);
@@ -124,14 +123,14 @@ public class MessageDAO {
 */
 	
 	//--Need to tweak to get messages from db by receiver Email
-	public Message getMessages(String email)
+	public Message getMessagesById(String id)
 	{
 		try {
 			//String token
 			//View needs to be created for lunch amigo!
-			List<Message> list = dbClient.view("userViews/getUserByEmail")
+			List<Message> list = dbClient.view("messageViews/getMessagesByUserEmail")
 					.includeDocs(true)
-					.key(email)
+					.key(id)
 					.limit(1).query(Message.class);
 			
 			
@@ -153,16 +152,32 @@ public class MessageDAO {
 	}
 
 	//--Get sent messages??? --Do we need this
-	/*
-	public List<User> getMultipleUsers(List<String> emailList)
+
+	public List<Message> getMultipleMessagePerUser(String email, MessageState state)
 	{	
+		//Set default mode all messages just in case
+		String chosenCouchDBView = "messageViews/getMessagesByUserEmail";
+		//Set Mode
+		switch (state) {
+			case Unread: chosenCouchDBView = "messageViews/getUnreadMessagesByUserEmail";
+				break;
+				
+			case Undiscovered: chosenCouchDBView = "messageViews/getUndiscoveredMessagesByUserEmail";
+			break;
+			
+			case Discovered: chosenCouchDBView = "messageViews/getDiscoveredMessagesByUserEmail";
+			break;
+			
+			default: chosenCouchDBView = "messageViews/getMessagesByUserEmail";
+		}
+		
 		try {
-			//String token
+
 			//View needs to be created for lunch amigo!
-			List<User> list = dbClient.view("userViews/getUserByEmail")
+			List<Message> list = dbClient.view(chosenCouchDBView)
 					.includeDocs(true)
-					.keys(emailList) //This is for multiple Keys
-					.query(User.class);
+					.key(email)
+					.query(Message.class);
 			
 			return list;
 		} catch (Exception e) {
@@ -171,7 +186,7 @@ public class MessageDAO {
 		}
 		//return null;
 	}
-	*/
+
 	
 	public boolean updateMessage(Message m) {
 		

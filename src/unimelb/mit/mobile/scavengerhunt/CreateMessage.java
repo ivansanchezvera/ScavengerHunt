@@ -77,7 +77,7 @@ public class CreateMessage extends ActionBarActivity {
 			Date myDate = c.getTime();  // adds one hour
 			Timestamp stamp = new Timestamp(myDate.getTime());	
 			
-			Message m = new Message(messageText.getText().toString(), sender, receiver, "Unread", "0001,0002", stamp, hints);
+			Message m = new Message(messageText.getText().toString(), sender, receiver, MessageState.Unread, "0001,0002", stamp, hints);
 			
 			messageSavedOK = messageDB.execute(m).get();
 				
