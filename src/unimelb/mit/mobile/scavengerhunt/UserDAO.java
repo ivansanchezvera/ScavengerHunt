@@ -154,9 +154,8 @@ public class UserDAO {
 			List<String> minilist = emailList.subList(0, 10);
 			List<User> list = dbClient.view("userViews/getUserByEmail")
 					.includeDocs(true)
-					//.key("julio@address.com")
 					.keys(emailList) //This is for multiple Keys
-					.limit(1).query(User.class);
+					.query(User.class);
 			
 			return list;
 		} catch (Exception e) {

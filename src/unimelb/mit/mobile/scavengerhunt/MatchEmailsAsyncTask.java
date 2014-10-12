@@ -80,9 +80,7 @@ public class MatchEmailsAsyncTask extends AsyncTaskLoader<List<String>>{
 			
 			for(User u: contactsAlreadyInPlatform)
 			{
-				if( dNow.compareTo(u.getAvailableUntil()) < 0 ){
 					trueAmigos.add(u.getEmail());
-				}
 			}
 
 			//to write in file
