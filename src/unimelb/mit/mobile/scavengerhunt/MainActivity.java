@@ -162,8 +162,8 @@ public class MainActivity extends Activity {
 		// start another activity if the person succeed to login
 		if (isLoggedIn == true) {
 			storeCredentials();
-			//Intent intent = new Intent(this, Inbox.class);
-			//startActivity(intent);
+			Intent intent = new Intent(this, Inbox.class);
+			startActivity(intent);
 		}
 	}
 	

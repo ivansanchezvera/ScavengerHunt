@@ -54,10 +54,10 @@ public class UnreadMessages extends Fragment {
 			userMessages=messageDAO.getMultipleMessagePerUser(receiver,MessageState.DISCOVERED);
 		}
 		else if (typeMessage==1){
-			userMessages=messageDAO.getMultipleMessagePerUser(receiver,MessageState.UNREAD);
+			userMessages=messageDAO.getMultipleMessagePerUser(receiver,MessageState.UNDISCOVERED);
 		}
 		else {
-			userMessages=messageDAO.getMultipleMessagePerUser(receiver,MessageState.UNREAD);
+			userMessages=messageDAO.getSentMessagesPerUser(receiver);
 		}
     	
     	
@@ -186,7 +186,14 @@ public class UnreadMessages extends Fragment {
 			else if (randomNum == 4){
 				uriString += "light_red/";
 			}
-    	    char firstChar = listMessages.get(position).getSender().toLowerCase().charAt(0);
+    	    char firstChar;
+    	    if (typeMessage==2){
+    	    	firstChar = listMessages.get(position).getReceiver().toLowerCase().charAt(0);
+    	    }
+    	    else{
+    	    	firstChar = listMessages.get(position).getSender().toLowerCase().charAt(0);
+    	    } 
+    	    
     	    int pos = firstChar - 'a' + 1;
     	    
     	    uriString+="letters_s-"+pos+".png";
@@ -208,9 +215,14 @@ public class UnreadMessages extends Fragment {
     	    } catch (IOException e) {
     	        e.printStackTrace();
     	    }
-    	    holder.txtsender.setText(listMessages.get(position).getSender());
+    	    if (typeMessage==2){
+    	    	holder.txtsender.setText(listMessages.get(position).getReceiver());
+    	    }
+    	    else{
+    	    	holder.txtsender.setText(listMessages.get(position).getSender());
+    	    }    	    
     	    holder.txtdetails.setText(listMessages.get(position).getReceiver() + " " + uriString);
-    	    if (listMessages.get(position).getStatus()==MessageState.UNREAD){
+    	    if (listMessages.get(position).getStatus()==MessageState.UNREAD && typeMessage != 2){
     	    	holder.txtsender.setTypeface(Typeface.SANS_SERIF,Typeface.BOLD);
     	    	holder.linearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));
     	    }

@@ -14,11 +14,12 @@
                 style="@style/LinearLayoutVerticalStandard"
                 android:paddingBottom="10dp" >
 
-                <TextView
+                <EditText
                     android:id="@+id/recipientUsernameText"
                     style="@style/TextViewSmall"
-                    android:layout_gravity="center"
-                    android:text="person" />
+                    android:layout_gravity="center" />
+                
+                
 
                 <TextView
                     android:id="@+id/Message"

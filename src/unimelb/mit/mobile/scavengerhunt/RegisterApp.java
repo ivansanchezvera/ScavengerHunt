@@ -20,7 +20,7 @@ public class RegisterApp extends AsyncTask<Void, Void, String> {
  private static final String TAG = "GCMRelated";
  Context ctx;
  GoogleCloudMessaging gcm;
- String SENDER_ID = "709698970393";
+ String SENDER_ID = "18260074068";
  String regid = null; 
  private int appVersion;
  

@@ -29,7 +29,7 @@ public class ViewMessage extends Activity {
 		
 		Bundle extras = getIntent().getExtras();
         if (extras != null) {
-        	if (extras.getString("sender")=="0"){
+        	if (extras.getString("type").equals("0")){
         		mSender.setText(extras.getString("sender"));
         		mDateLabel.setText("Discovered Time:");
         		mDirectionLabel.setText("Sender:");
