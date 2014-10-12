@@ -166,7 +166,6 @@ public class UserDAO {
 		try {
 			//String token
 			//View needs to be created for lunch amigo!
-			List<String> minilist = emailList.subList(0, 10);
 			List<User> list = dbClient.view("userViews/getUserByEmail")
 					.includeDocs(true)
 					.keys(emailList) //This is for multiple Keys
