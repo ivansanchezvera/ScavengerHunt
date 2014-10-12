@@ -16,7 +16,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="52dp"
         android:gravity="center"
-        android:text="Lunch Amigo"
+        android:text="Scavenger Hunt"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
@@ -28,7 +28,7 @@
         android:layout_marginTop="164dp"
         android:ems="10"
         android:inputType="textPassword"
-        android:text="Password" >
+        android:text="123" >
 
         <requestFocus />
     </EditText>

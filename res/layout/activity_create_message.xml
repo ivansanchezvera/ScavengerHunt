@@ -9,80 +9,78 @@
     tools:context="unimelb.mit.mobile.scavengerhunt.CreateMessage" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/recipientNameLabel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Message To" />
 
     <EditText
-        android:id="@+id/messageText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
-        android:layout_alignParentRight="true"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:text="Enter Message Here" />
-
-    <EditText
-        android:id="@+id/editText5"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/messageText"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:text="Now place your phone in the location you want the message to sit and press Send Message" />
-
-    <EditText
         android:id="@+id/messageHintText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView2"
-        android:layout_marginTop="25dp"
+        android:layout_alignLeft="@+id/messageLabel"
+        android:layout_below="@+id/messageLocationHintLabel"
         android:ems="10"
         android:inputType="textMultiLine"
         android:text="Enter Hint Here" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/messageLocationHintLabel"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText1"
-        android:layout_below="@+id/editText1"
+        android:layout_alignLeft="@+id/messageHintText"
+        android:layout_below="@+id/recipientUsernameText"
         android:layout_marginTop="16dp"
-        android:text="Message Location Hint"
-        android:textSize="@dimen/abc_action_bar_title_text_size" />
-
-    <EditText
-        android:id="@+id/recipientUsernameText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="19dp"
-        android:ems="10"
-        android:inputType="textPersonName" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/editText5"
-        android:layout_below="@+id/messageHintText"
-        android:layout_marginTop="18dp"
-        android:text="Message:"
+        android:text="Message Location Hint:"
         android:textSize="@dimen/abc_action_bar_title_text_size" />
 
     <Button
         android:id="@+id/sendMessageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/editText5"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="22dp"
+        android:layout_marginBottom="29dp"
         android:onClick="sendMessage"
         android:text="Send Message" />
+
+    <EditText
+        android:id="@+id/messageInstructionsLabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/sendMessageButton"
+        android:layout_alignLeft="@+id/messageText"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:text="Now place your phone in the location you want the message to sit and press Send Message" />
+
+    <EditText
+        android:id="@+id/messageText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/messageLabel"
+        android:layout_centerVertical="true"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:text="Enter Message Here" />
+
+    <TextView
+        android:id="@+id/messageLabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/messageText"
+        android:layout_alignLeft="@+id/recipientUsernameText"
+        android:text="Message:"
+        android:textSize="@dimen/abc_action_bar_title_text_size" />
+
+    <EditText
+        android:id="@+id/recipientUsernameText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/recipientNameLabel"
+        android:layout_below="@+id/recipientNameLabel"
+        android:layout_marginTop="18dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
 
 </RelativeLayout>
