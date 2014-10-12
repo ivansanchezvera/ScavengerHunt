@@ -110,8 +110,6 @@ public class MainActivity extends Activity {
 	    sharedpreferences = getSharedPreferences(AUTHPREFS, Context.MODE_PRIVATE);
 	   // userDAO = new UserDAO();
 
-	    testMessageViews();
-
 	    appRegistration();
 	    
 	    
@@ -458,17 +456,5 @@ public class MainActivity extends Activity {
 	         throw new RuntimeException("Could not get package name: " + e);
 	     }
 	 }
-	 
-		
-		public void testMessageViews()
-		{
-			List<Message> lMessage = new ArrayList<Message>();
-			Message m = new Message();
-			MessageDAO mDAO = new MessageDAO();
-			lMessage = mDAO.getMultipleMessagePerUser("email@address.com", MessageState.UNREAD);
-			if(lMessage == null || lMessage.size()==0)
-			{
-				Log.e("Views are not working", "Errors in the views, not retrieving!");
-			}
-		}
+
 }
