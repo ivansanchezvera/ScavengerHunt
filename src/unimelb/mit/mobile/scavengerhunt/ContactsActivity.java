@@ -95,7 +95,7 @@ public class ContactsActivity extends ListActivity
 		
 		if(friendList==null || friendList.size()<1)
 		{
-			Toast.makeText(this, "Fuck no amigos to show", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "=( No friends to show", Toast.LENGTH_LONG).show();
 			finish();
 		}
 		else{
@@ -189,7 +189,7 @@ public class ContactsActivity extends ListActivity
 		mAdapter.swapCursor(null);
 	}
 	
-	//This is used when you click on a contact, neet to send info to next activity (send message)/
+	//This is used when you click on a contact, need to send info to next activity (send message)/
 	//Info required is basically User Id and Recipient ID
 	@Override 
 	public void onListItemClick(ListView l, View v, int position, long id) {
@@ -212,6 +212,7 @@ public class ContactsActivity extends ListActivity
 	}
 	
 	//Someone Elses code - Document this
+	//Probably code from Dennis, not sure if it works!
 	private double haversine(
 	        double lat1, double lng1, double lat2, double lng2) {
 	    int r = 6371; // average radius of the earth in km
