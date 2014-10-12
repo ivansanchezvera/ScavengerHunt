@@ -157,7 +157,7 @@ public class MessageDAO {
 		//Set default mode all messages just in case
 		String chosenCouchDBView = "messageViews/getMessagesByUserEmail";
 		//Set Mode
-		/*
+		
 		switch (state) {
 		
 			case UNREAD: chosenCouchDBView = "messageViews/getUnreadMessagesByUserEmail";
@@ -171,7 +171,7 @@ public class MessageDAO {
 			
 			default: chosenCouchDBView = "messageViews/getMessagesByUserEmail";
 		}
-		*/
+		
 		
 		try {
 
