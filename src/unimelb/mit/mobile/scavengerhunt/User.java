@@ -19,7 +19,7 @@ public class User {
 	private String geolocationLatLong;
 	private boolean availability;
 	private Date availableUntil;
-	private String deviceId;
+	private String registration_id;
 	
 	public User(String email, String password, String token, String confirmed,
 			Timestamp timestamp) {
@@ -160,11 +160,11 @@ public class User {
 	}
 
 	public String getDeviceId() {
-		return deviceId;
+		return registration_id;
 	}
 
 	public void setDeviceId(String deviceId) {
-		this.deviceId = deviceId;
+		this.registration_id = deviceId;
 	}
 	
 	

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import android.support.v7.app.ActionBarActivity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,6 +21,8 @@ public class CreateMessage extends ActionBarActivity {
 
 	private EditText messageText;
 	private EditText messageHint;	
+	private EditText recipientNameText;
+	public static final String AUTHPREFS = "authPrefs" ;
 	private String sender;
 	private String receiver;
 	private List<String> hints;
@@ -31,14 +34,27 @@ public class CreateMessage extends ActionBarActivity {
 		
 		messageText = (EditText) findViewById(R.id.messageText);
 		messageHint = (EditText) findViewById(R.id.messageHintText);
+		recipientNameText = (EditText) findViewById(R.id.recipientUsernameText);
+		
+		//Get Receiver information from Contacts Activity
+		receiver = getIntent().getStringExtra("recipientEmail");
+		recipientNameText.setText(receiver);
+		recipientNameText.setEnabled(false);
+		
 		
 		//GetSender and Receiver from previous activity
-		sender = "fulanito@guasmo.com";
-		receiver = "julio@address.com";
+		// Restore preferences to get username global variable
+	       SharedPreferences settings = getSharedPreferences(AUTHPREFS, 0);
+	       boolean silent = settings.getBoolean("silentMode", false);
+		
+	       //Manage this error, what happens when there is not preference
+	       //for this key and the default value is taken. This should not happen
+		sender = settings.getString("userEmail", "abc@error.com");
+		//receiver = "julio@address.com";
 		
 		//Now the hints
 		hints = new ArrayList<String>();
-		hints.add(messageHint.getText().toString());
+		
 		
 	}
 
@@ -76,6 +92,9 @@ public class CreateMessage extends ActionBarActivity {
 			c.add(Calendar.HOUR_OF_DAY, 1);
 			Date myDate = c.getTime();  // adds one hour
 			Timestamp stamp = new Timestamp(myDate.getTime());	
+			
+			//Get hints form screen
+			hints.add(messageHint.getText().toString());
 			
 			Message m = new Message(messageText.getText().toString(), sender, receiver, MessageState.Unread, "0001,0002", stamp, hints);
 			

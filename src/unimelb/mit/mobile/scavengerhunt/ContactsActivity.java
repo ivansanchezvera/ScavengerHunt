@@ -199,15 +199,15 @@ public class ContactsActivity extends ListActivity
 
         Cursor cursor = (Cursor) mAdapter.getItem(position);
         String selection = cursor.getString(1);
-        String selection2 = cursor.getString(2);
+        String recepientEmail = cursor.getString(2);
         Toast.makeText(this, "You selected: " + selection,Toast.LENGTH_LONG).show(); 
-        Toast.makeText(this, "Email: " + selection2,Toast.LENGTH_LONG).show(); 
+        Toast.makeText(this, "Email: " + recepientEmail,Toast.LENGTH_LONG).show(); 
 		
 		Object contactItem = getListView().getItemIdAtPosition(position);
 		//String item = (String) getListAdapter().getItem(position);
 		//Object o = getListAdapter().getItem(position);
 		Intent intent = new Intent(this, CreateMessage.class);
-		intent.putExtra(recipientEmail, "email@abc.com" );
+		intent.putExtra("recipientEmail", recepientEmail );
 		startActivity(intent);
 	}
 	

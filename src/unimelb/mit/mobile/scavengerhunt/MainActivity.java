@@ -67,10 +67,13 @@ public class MainActivity extends Activity {
 	private MessageDAO userDAO;
 	private User amigoUser;
 	
+	//Shared preferences is useful to persist application information
+	//while the app is alive, Key Value way.
 	SharedPreferences sharedpreferences;
 	//TODO make this private I guess.
 	public static final String AUTHPREFS = "authPrefs" ;
 	public static final String EMAIL = "emailKey"; 
+	
 	
 	
 	/*
@@ -84,7 +87,7 @@ public class MainActivity extends Activity {
 	private static final String TAG = "GCMRelated_1";
 	GoogleCloudMessaging gcm;
 	AtomicInteger msgId = new AtomicInteger();
-	String regid;
+	String regid; //Device ID for push notifications
 	/*
 	 * END CODE.
 	 * */
@@ -105,7 +108,15 @@ public class MainActivity extends Activity {
 	    sharedpreferences = getSharedPreferences(AUTHPREFS, Context.MODE_PRIVATE);
 	   // userDAO = new UserDAO();
 	    
-	    /****************************************************/
+
+	    appRegistration();
+	}
+
+	/**
+	 * 
+	 */
+	public void appRegistration() {
+		/****************************************************/
 	    if (checkPlayServices() && isLoggedIn) {
 	        gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
 	              regid = getRegistrationId(getApplicationContext());
@@ -212,6 +223,14 @@ public class MainActivity extends Activity {
 					
 					// todo use shared preference as a bool to say you are logged in instead of a instance variable
 					isLoggedIn = true;
+					
+					//Save username email to be persistent in the whole application
+					SharedPreferences.Editor editor = sharedpreferences.edit();
+					editor.putString("userEmail", mEmail);
+					editor.commit();
+					
+					persistDeviceRegistrationIDInUser();
+					
 					}else{
 						Toast.makeText(this, "Login Failed, Wrong Credentials!!!", Toast.LENGTH_LONG).show();
 					isLoggedIn = false;
@@ -231,6 +250,41 @@ public class MainActivity extends Activity {
 		// todo what if user is not registered ? add another elif	
 
 		
+	}
+
+	private boolean persistDeviceRegistrationIDInUser() {
+		
+		//Call to make sure that registration ID is not null
+		appRegistration();
+		
+		//Do I need to refactor this and use an AsynchTask
+		//Now persist registration ID
+		boolean userUpdateOK = false;
+		UserDAO userDAO = new UserDAO();
+		User tempUser =	userDAO.getUser(amigoUser.getEmail());
+
+		if(tempUser!=null)
+			{
+				tempUser.setDeviceId(regid);
+				// send the changes to the server
+				AsyncTask<User, Void, Boolean> updateUserToDB = new dbUpdateUserTask();
+				try {
+					userUpdateOK = updateUserToDB.execute(tempUser).get();
+					
+					if(!userUpdateOK)
+					{
+						Toast.makeText(this, "Error persisting Registration ID!!!", Toast.LENGTH_SHORT).show();
+					}
+						
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			return userUpdateOK;
 	}
 	
 	public void tryRegister(View view) {
@@ -302,7 +356,8 @@ public class MainActivity extends Activity {
 					
 					if(userRegistrationOK)
 					{
-					Toast.makeText(this, "LunchTime, you are in!!!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(this, "Now you are Part of Lunch Amigo!!!", Toast.LENGTH_SHORT).show();
+					
 					}else{
 						Toast.makeText(this, "Registration Failed, try later please!!!", Toast.LENGTH_SHORT).show();
 					}
