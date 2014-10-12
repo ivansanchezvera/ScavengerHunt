@@ -82,7 +82,7 @@ public class MainActivity extends Activity {
 	*/
 	private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 	public static final String EXTRA_MESSAGE = "message";
-	public static final String PROPERTY_REG_ID = "deviceId";
+	public static final String PROPERTY_REG_ID = "device_id";
 	private static final String PROPERTY_APP_VERSION = "appVersion";
 	private static final String TAG = "GCMRelated_1";
 	GoogleCloudMessaging gcm;
@@ -265,7 +265,8 @@ public class MainActivity extends Activity {
 
 		if(tempUser!=null)
 			{
-				tempUser.setDeviceId(regid);
+				String registrationID = getRegistrationId(this);
+				tempUser.setDeviceId(registrationID );
 				// send the changes to the server
 				AsyncTask<User, Void, Boolean> updateUserToDB = new dbUpdateUserTask();
 				try {
