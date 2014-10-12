@@ -106,10 +106,9 @@ public class MainActivity extends Activity {
 	   // userDAO = new UserDAO();
 	    
 	    /****************************************************/
-	    if (checkPlayServices() && isLoggedIn) {
+	    if (checkPlayServices()) {
 	        gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
-	              regid = getRegistrationId(getApplicationContext());
-	               
+	              regid = getRegistrationId(getApplicationContext());	              
 	              if (regid.isEmpty()) {
 	            	  new RegisterApp(getApplicationContext(), gcm, getAppVersion(getApplicationContext())).execute();
 	              }
@@ -140,7 +139,6 @@ public class MainActivity extends Activity {
 	}
 	// Login Button
 	public void tryLogin(View view) {
-
 		mEmail = EmailView.getText().toString();
 		mPassword = PasswordView.getText().toString();
 				
@@ -149,7 +147,7 @@ public class MainActivity extends Activity {
 		// start another activity if the person succeed to login
 		if (isLoggedIn == true) {
 			storeCredentials();
-			Intent intent = new Intent(this, ShakerActivity.class);
+			Intent intent = new Intent(this, Inbox.class);
 			startActivity(intent);
 		}
 	}
@@ -207,8 +205,8 @@ public class MainActivity extends Activity {
 					userLoginOK = loginDB.execute(amigoUser).get();
 					
 					if(userLoginOK)
-					{
-					Toast.makeText(this, "LunchTime, you are in!!!", Toast.LENGTH_SHORT).show();
+					{						
+					Toast.makeText(this, "Welcome!", Toast.LENGTH_SHORT).show();
 					
 					// todo use shared preference as a bool to say you are logged in instead of a instance variable
 					isLoggedIn = true;
@@ -301,8 +299,8 @@ public class MainActivity extends Activity {
 					userRegistrationOK = saveUserToDB.execute(amigoUser).get();
 					
 					if(userRegistrationOK)
-					{
-					Toast.makeText(this, "LunchTime, you are in!!!", Toast.LENGTH_SHORT).show();
+					{						
+						Toast.makeText(this, "Welcome!", Toast.LENGTH_SHORT).show();
 					}else{
 						Toast.makeText(this, "Registration Failed, try later please!!!", Toast.LENGTH_SHORT).show();
 					}
