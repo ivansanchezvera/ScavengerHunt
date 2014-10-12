@@ -50,7 +50,7 @@ public class MessageDAO {
 		try {
 			Timestamp stamp = new Timestamp(myDate.getTime());
 			
-			Message m = new Message(message, sender, receiver, MessageState.Unread, location, stamp); 
+			Message m = new Message(message, sender, receiver, MessageState.UNREAD, location, stamp); 
 
 			// Cast the new object to JSON file to be saved in the DB
 			json = gson.toJson(m);
@@ -159,13 +159,13 @@ public class MessageDAO {
 		String chosenCouchDBView = "messageViews/getMessagesByUserEmail";
 		//Set Mode
 		switch (state) {
-			case Unread: chosenCouchDBView = "messageViews/getUnreadMessagesByUserEmail";
+			case UNREAD: chosenCouchDBView = "messageViews/getUnreadMessagesByUserEmail";
 				break;
 				
-			case Undiscovered: chosenCouchDBView = "messageViews/getUndiscoveredMessagesByUserEmail";
+			case UNDISCOVERED: chosenCouchDBView = "messageViews/getUndiscoveredMessagesByUserEmail";
 			break;
 			
-			case Discovered: chosenCouchDBView = "messageViews/getDiscoveredMessagesByUserEmail";
+			case DISCOVERED: chosenCouchDBView = "messageViews/getDiscoveredMessagesByUserEmail";
 			break;
 			
 			default: chosenCouchDBView = "messageViews/getMessagesByUserEmail";
@@ -212,6 +212,7 @@ public class MessageDAO {
 			return false;
 		}
 	}
+
 }
 
 //What about deleting messages??? --Build here when needed

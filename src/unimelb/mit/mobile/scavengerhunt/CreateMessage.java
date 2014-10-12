@@ -47,10 +47,9 @@ public class CreateMessage extends ActionBarActivity {
 	       SharedPreferences settings = getSharedPreferences(AUTHPREFS, 0);
 	       boolean silent = settings.getBoolean("silentMode", false);
 		
-	       //Manage this error, what happens when there is not preference
-	       //for this key and the default value is taken. This should not happen
+	    //Manage this error, what happens when there is not preference
+	    //for this key and the default value is taken. This should not happen
 		sender = settings.getString("userEmail", "abc@error.com");
-		//receiver = "julio@address.com";
 		
 		//Now the hints
 		hints = new ArrayList<String>();
@@ -96,7 +95,7 @@ public class CreateMessage extends ActionBarActivity {
 			//Get hints form screen
 			hints.add(messageHint.getText().toString());
 			
-			Message m = new Message(messageText.getText().toString(), sender, receiver, MessageState.Unread, "0001,0002", stamp, hints);
+			Message m = new Message(messageText.getText().toString(), sender, receiver, MessageState.UNREAD, MessageNotificationState.UNNOTIFIED, "0001,0002", stamp, hints);
 			
 			messageSavedOK = messageDB.execute(m).get();
 				

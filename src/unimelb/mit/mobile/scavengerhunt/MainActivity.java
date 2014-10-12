@@ -1,8 +1,10 @@
 package unimelb.mit.mobile.scavengerhunt;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import unimelb.mit.mobile.scavengerhunt.R;
@@ -107,9 +109,12 @@ public class MainActivity extends Activity {
 		
 	    sharedpreferences = getSharedPreferences(AUTHPREFS, Context.MODE_PRIVATE);
 	   // userDAO = new UserDAO();
-	    
+
+	    testMessageViews();
 
 	    appRegistration();
+	    
+	    
 	}
 
 	/**
@@ -262,7 +267,7 @@ public class MainActivity extends Activity {
 		boolean userUpdateOK = false;
 		UserDAO userDAO = new UserDAO();
 		User tempUser =	userDAO.getUser(amigoUser.getEmail());
-
+		
 		if(tempUser!=null)
 			{
 				String registrationID = getRegistrationId(this);
@@ -453,4 +458,13 @@ public class MainActivity extends Activity {
 	         throw new RuntimeException("Could not get package name: " + e);
 	     }
 	 }
+	 
+		
+		public void testMessageViews()
+		{
+			List<Message> lMessage = new ArrayList<Message>();
+			Message m = new Message();
+			MessageDAO mDAO = new MessageDAO();
+			lMessage = mDAO.getMultipleMessagePerUser("email@address.com", MessageState.UNREAD);
+		}
 }
