@@ -108,10 +108,6 @@ public class MainActivity extends Activity {
 	    sharedpreferences = getSharedPreferences(AUTHPREFS, Context.MODE_PRIVATE);
 	   // userDAO = new UserDAO();
 	    
-<<<<<<< HEAD
-	    /****************************************************/
-	    if (checkPlayServices()) {
-=======
 
 	    appRegistration();
 	}
@@ -122,9 +118,9 @@ public class MainActivity extends Activity {
 	public void appRegistration() {
 		/****************************************************/
 	    if (checkPlayServices() && isLoggedIn) {
->>>>>>> 48fc584ef6302163078a4bbd9601039b4d9b5d6c
 	        gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
-	              regid = getRegistrationId(getApplicationContext());	              
+	              regid = getRegistrationId(getApplicationContext());
+	               
 	              if (regid.isEmpty()) {
 	            	  new RegisterApp(getApplicationContext(), gcm, getAppVersion(getApplicationContext())).execute();
 	              }
@@ -155,6 +151,7 @@ public class MainActivity extends Activity {
 	}
 	// Login Button
 	public void tryLogin(View view) {
+
 		mEmail = EmailView.getText().toString();
 		mPassword = PasswordView.getText().toString();
 				
@@ -163,7 +160,7 @@ public class MainActivity extends Activity {
 		// start another activity if the person succeed to login
 		if (isLoggedIn == true) {
 			storeCredentials();
-			Intent intent = new Intent(this, Inbox.class);
+			Intent intent = new Intent(this, ShakerActivity.class);
 			startActivity(intent);
 		}
 	}
@@ -221,8 +218,8 @@ public class MainActivity extends Activity {
 					userLoginOK = loginDB.execute(amigoUser).get();
 					
 					if(userLoginOK)
-					{						
-					Toast.makeText(this, "Welcome!", Toast.LENGTH_SHORT).show();
+					{
+					Toast.makeText(this, "LunchTime, you are in!!!", Toast.LENGTH_SHORT).show();
 					
 					// todo use shared preference as a bool to say you are logged in instead of a instance variable
 					isLoggedIn = true;
@@ -358,14 +355,9 @@ public class MainActivity extends Activity {
 					userRegistrationOK = saveUserToDB.execute(amigoUser).get();
 					
 					if(userRegistrationOK)
-<<<<<<< HEAD
-					{						
-						Toast.makeText(this, "Welcome!", Toast.LENGTH_SHORT).show();
-=======
 					{
 					Toast.makeText(this, "Now you are Part of Lunch Amigo!!!", Toast.LENGTH_SHORT).show();
 					
->>>>>>> 48fc584ef6302163078a4bbd9601039b4d9b5d6c
 					}else{
 						Toast.makeText(this, "Registration Failed, try later please!!!", Toast.LENGTH_SHORT).show();
 					}
