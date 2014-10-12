@@ -45,7 +45,6 @@ public class CreateMessage extends ActionBarActivity {
 		//GetSender and Receiver from previous activity
 		// Restore preferences to get username global variable
 	       SharedPreferences settings = getSharedPreferences(AUTHPREFS, 0);
-	       boolean silent = settings.getBoolean("silentMode", false);
 		
 	    //Manage this error, what happens when there is not preference
 	    //for this key and the default value is taken. This should not happen
