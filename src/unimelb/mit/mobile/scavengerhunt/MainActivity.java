@@ -111,8 +111,7 @@ public class MainActivity extends Activity {
 	   // userDAO = new UserDAO();
 
 	    appRegistration();
-	    
-	    
+    
 	}
 
 	/**
@@ -163,8 +162,8 @@ public class MainActivity extends Activity {
 		// start another activity if the person succeed to login
 		if (isLoggedIn == true) {
 			storeCredentials();
-			Intent intent = new Intent(this, Inbox.class);
-			startActivity(intent);
+			//Intent intent = new Intent(this, Inbox.class);
+			//startActivity(intent);
 		}
 	}
 	
@@ -456,5 +455,4 @@ public class MainActivity extends Activity {
 	         throw new RuntimeException("Could not get package name: " + e);
 	     }
 	 }
-
 }

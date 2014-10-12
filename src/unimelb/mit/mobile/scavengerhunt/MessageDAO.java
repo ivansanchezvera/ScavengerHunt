@@ -128,7 +128,7 @@ public class MessageDAO {
 		try {
 			//String token
 			//View needs to be created for lunch amigo!
-			List<Message> list = dbClient.view("messageViews/getMessagesByUserEmail")
+			List<Message> list = dbClient.view("messageViews/getMessageById")
 					.includeDocs(true)
 					.key(id)
 					.limit(1).query(Message.class);
@@ -178,6 +178,24 @@ public class MessageDAO {
 
 			//View needs to be created for lunch amigo!
 			List<Message> list = dbClient.view(chosenCouchDBView)
+					.includeDocs(true)
+					.key(email)
+					.query(Message.class);
+			
+			return list;
+		} catch (Exception e) {
+			System.out.println(e.getStackTrace());
+			return null;
+		}
+		//return null;
+	}
+	
+	public List<Message> getSentMessagesPerUser(String email)
+	{	
+		try {
+
+			//View needs to be created for lunch amigo! getSentMessagesByUserEmail
+			List<Message> list = dbClient.view("messageViews/getSentMessagesByUserEmail")
 					.includeDocs(true)
 					.key(email)
 					.query(Message.class);
