@@ -466,5 +466,9 @@ public class MainActivity extends Activity {
 			Message m = new Message();
 			MessageDAO mDAO = new MessageDAO();
 			lMessage = mDAO.getMultipleMessagePerUser("email@address.com", MessageState.UNREAD);
+			if(lMessage == null || lMessage.size()==0)
+			{
+				Log.e("Views are not working", "Errors in the views, not retrieving!");
+			}
 		}
 }
