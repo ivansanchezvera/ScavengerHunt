@@ -28,7 +28,7 @@
         android:layout_marginTop="164dp"
         android:ems="10"
         android:inputType="textPassword"
-        android:text="Password" >
+        android:text="123" >
 
         <requestFocus />
     </EditText>
