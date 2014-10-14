@@ -75,8 +75,11 @@ public class MainActivity extends Activity {
 	//TODO make this private I guess.
 	public static final String AUTHPREFS = "authPrefs" ;
 	public static final String EMAIL = "emailKey"; 
-	
-	
+
+	//Global Asynch task
+	AsyncTask<String, Void, Boolean> connectDB;
+	AsyncTask<User, Void, Boolean> loginDB;
+	AsyncTask<User, Void, Boolean> updateUserToDB;	
 	
 	/*
 	 * PUSH NOTIFICATIONS
@@ -111,7 +114,17 @@ public class MainActivity extends Activity {
 	   // userDAO = new UserDAO();
 
 	    appRegistration();
+	    preLoadAsynchTask();
     
+	}
+	
+	private void preLoadAsynchTask()
+	{
+		//Here we call the db and check if the user exists
+		connectDB = new dbConnectionTask();
+		loginDB = new dbLogin();
+		updateUserToDB = new dbUpdateUserTask();
+		
 	}
 
 	/**
@@ -192,14 +205,10 @@ public class MainActivity extends Activity {
 			toast.show();
 		} else {
 			
-			
-			//Here we call the db and check if the user exists
-			AsyncTask<String, Void, Boolean> connectDB = new dbConnectionTask();
-			AsyncTask<User, Void, Boolean> loginDB = new dbLogin();
-			
 			Boolean emailExists;
 			Boolean userLoginOK;
 			try {
+				connectDB = new dbConnectionTask();
 				emailExists = connectDB.execute(mEmail).get();
 		
 				if(emailExists)
@@ -217,11 +226,12 @@ public class MainActivity extends Activity {
 					userDAO.insertUser(amigoUser);
 					isValid = true;
 					*/
+					loginDB = new dbLogin();
 					userLoginOK = loginDB.execute(amigoUser).get();
 					
 					if(userLoginOK)
 					{
-					Toast.makeText(this, "Welcome back!", Toast.LENGTH_SHORT).show();
+						Toast.makeText(this, "Welcome back!", Toast.LENGTH_SHORT).show();
 					
 					// todo use shared preference as a bool to say you are logged in instead of a instance variable
 					isLoggedIn = true;
@@ -251,7 +261,6 @@ public class MainActivity extends Activity {
 		}
 		// todo what if user is not registered ? add another elif	
 
-		
 	}
 
 	private boolean persistDeviceRegistrationIDInUser() {
@@ -265,12 +274,14 @@ public class MainActivity extends Activity {
 		UserDAO userDAO = new UserDAO();
 		User tempUser =	userDAO.getUser(amigoUser.getEmail());
 		
-		if(tempUser!=null)
+		String deviceId = tempUser.getDeviceId();
+		
+		if(tempUser!=null && deviceId == "")
 			{
 				String registrationID = getRegistrationId(this);
 				tempUser.setDeviceId(registrationID );
 				// send the changes to the server
-				AsyncTask<User, Void, Boolean> updateUserToDB = new dbUpdateUserTask();
+				updateUserToDB = new dbUpdateUserTask();
 				try {
 					userUpdateOK = updateUserToDB.execute(tempUser).get();
 					

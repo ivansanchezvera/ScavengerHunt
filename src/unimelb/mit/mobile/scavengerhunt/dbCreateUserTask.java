@@ -6,6 +6,7 @@ import android.widget.Toast;
 public class dbCreateUserTask extends AsyncTask<User, Void, Boolean> {
 
 	boolean isValid = false;
+	UserDAO userDAO = new UserDAO();
 	@Override
 	protected Boolean doInBackground(User... parameters) {
 		// TODO Auto-generated method stub
@@ -16,7 +17,7 @@ public class dbCreateUserTask extends AsyncTask<User, Void, Boolean> {
 		isValid = false;
 		try{
 		//This can be refactored to use one single connection Object
-		UserDAO userDAO = new UserDAO();
+		
 		if(userDAO.insertUser(amigoUser))
 		{
 			isValid = true;
@@ -35,4 +36,9 @@ public class dbCreateUserTask extends AsyncTask<User, Void, Boolean> {
         //Here I need to show a Message
     }
 
+	@Override
+	protected void onPreExecute() {
+		// TODO Auto-generated method stub
+		super.onPreExecute();
+	}
 }

@@ -6,6 +6,8 @@ import android.widget.Toast;
 public class dbUpdateUserTask extends AsyncTask<User, Void, Boolean> {
 
 	boolean isValid = false;
+	UserDAO userDAO; 
+	
 	@Override
 	protected Boolean doInBackground(User... parameters) {
 		// TODO Auto-generated method stub
@@ -16,7 +18,7 @@ public class dbUpdateUserTask extends AsyncTask<User, Void, Boolean> {
 		isValid = false;
 		try{
 		//This can be refactored to use one single connection Object
-		UserDAO userDAO = new UserDAO();
+		
 		if(userDAO.updateUser(amigoUser))
 		{
 			isValid = true;
@@ -34,5 +36,14 @@ public class dbUpdateUserTask extends AsyncTask<User, Void, Boolean> {
         //showDialog("Downloaded " + result + " bytes");
         //Here I need to show a Message
     }
+	
+	@Override
+	protected void onPreExecute() {
+	// TODO Auto-generated method stub
+		super.onPreExecute();
+		userDAO = new UserDAO();
+		
+	}		
+	
 
 }

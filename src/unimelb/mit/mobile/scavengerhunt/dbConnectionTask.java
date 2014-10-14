@@ -4,13 +4,15 @@ import android.os.AsyncTask;
 
 public class dbConnectionTask extends AsyncTask<String, Void, Boolean> {
 
+	private UserDAO userDAO;
+	
 	@Override
 	protected Boolean doInBackground(String... email) {
 		// TODO Auto-generated method stub
 		
 		boolean temp = false;
 		try{
-		UserDAO userDAO = new UserDAO();
+		 
 		if(email.length>0)
 		{
 		temp = userDAO.alreadyExistEmail(email[0]);
@@ -22,5 +24,16 @@ public class dbConnectionTask extends AsyncTask<String, Void, Boolean> {
 		}
 		return temp;
 	}
-
+	
+	@Override
+	protected void onPreExecute() {
+		// TODO Auto-generated method stub
+		super.onPreExecute();
+		
+		try {
+			userDAO = new UserDAO();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 }
