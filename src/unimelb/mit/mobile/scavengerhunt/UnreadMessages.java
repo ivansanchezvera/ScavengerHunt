@@ -59,19 +59,7 @@ public class UnreadMessages extends Fragment {
     	
     	
     	ArrayList<Message> list = new ArrayList<Message>(userMessages);
-    	/*Message msg1 = new Message();
-    	msg1.setReceiver("Julio");
-    	msg1.setSender("Shawn");
-    	msg1.setStatus(MessageState.UNREAD);
     	
-    	Message msg2 = new Message();
-    	msg2.setReceiver("Chaby");
-    	msg2.setSender("Ivan");
-    	msg2.setStatus(MessageState.UNDISCOVERED);
-    	
-    	list.add(msg1);
-    	list.add(msg2);
-    	*/
     	View rootView = inflater.inflate(R.layout.activity_unread_messages, container, false);
 
         ListView lv = (ListView)rootView.findViewById(R.id.listViewUnreadMessages);
@@ -85,12 +73,15 @@ public class UnreadMessages extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
             	Message msg = (Message)adp.getItem(arg2);
+            	String id=msg.get_id();
+            	MessageDAO messageDAO = new MessageDAO();
+            	msg=messageDAO.getMessagesById(id);
             	if (typeMessage==0){ 
               		Intent intent = new Intent(arg1.getContext(),ViewMessage.class);
               		intent.putExtra("type", "0");
               		intent.putExtra("sender", msg.getSender());
               		intent.putExtra("message", msg.getMessage());
-              		intent.putExtra("date", msg.getDiscoveredTime());              		
+              		intent.putExtra("date", msg.getDiscoveredTime().toString());              		
                   	startActivity(intent);
             		 
         		}
@@ -133,7 +124,7 @@ public class UnreadMessages extends Fragment {
              		intent.putExtra("type", "1");
              		intent.putExtra("receiver", msg.getReceiver());
              		intent.putExtra("message", msg.getMessage());
-             		intent.putExtra("date", msg.getTimestamp());              		
+             		intent.putExtra("date", msg.getTimestamp().toString());              		
                  	startActivity(intent);
         		}
             }
