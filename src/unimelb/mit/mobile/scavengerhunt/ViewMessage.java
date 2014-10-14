@@ -40,6 +40,8 @@ public class ViewMessage extends Activity {
         		mDirectionLabel.setText("Receiver:");
         	}
         	mMessage.setText(extras.getString("message"));
+        	mMessage.setMaxLines(5);
+        	mMessage.setHeight(25);
     		mDate.setText(extras.getString("date"));
         }
 	}

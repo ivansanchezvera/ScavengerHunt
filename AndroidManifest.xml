@@ -83,11 +83,21 @@
         </activity>
         <activity
             android:name=".SearchingMessage"
-            android:label="@string/title_activity_background" >
+            android:label="@string/title_activity_background" 
+            android:parentActivityName=".Inbox" >
+        
+	        <meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value=".Inbox" />
         </activity>
         <activity
             android:name=".Congratulations"
-            android:label="@string/title_activity_congratulations" >
+            android:label="@string/title_activity_congratulations" 
+            android:parentActivityName=".Inbox" >
+        
+	        <meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value=".Inbox" />
         </activity>
 
         <meta-data
@@ -96,11 +106,21 @@
 
         <activity
             android:name=".UnreadMessages"
-            android:label="@string/title_activity_unread_messages" >
+            android:label="@string/title_activity_unread_messages" 
+            android:parentActivityName=".Inbox" >
+        
+	        <meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value=".Inbox" />
         </activity>
         <activity
             android:name=".Inbox"
-            android:label="@string/title_activity_inbox" >
+            android:label="@string/title_activity_inbox" 
+            android:parentActivityName=".MainActivity" >
+        
+	        <meta-data
+	            android:name="android.support.PARENT_ACTIVITY"
+	            android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".ViewMessage"

@@ -100,9 +100,21 @@ public class UnreadMessages extends Fragment {
         		else if (typeMessage==1){
 	        		Intent intent = new Intent(arg1.getContext(),SearchingMessage.class);
 	           		intent.putExtra("message_id", msg.get_id());
-	           		intent.putExtra("hint1", msg.getHints().get(0));
-	           		intent.putExtra("hint2", msg.getHints().get(0));
-	           		intent.putExtra("hint3", msg.getHints().get(0));
+	           		String hint1;
+	           		String hint2;
+	           		String hint3;
+	           		try{
+	           			intent.putExtra("hint1", msg.getHints().get(0));
+	           		}
+	           		catch(Exception e){}
+	           		try{
+	           			intent.putExtra("hint2", msg.getHints().get(1));
+	           		}
+	           		catch(Exception e){}
+	           		try{
+	           			intent.putExtra("hint3", msg.getHints().get(2));
+	           		}
+	           		catch(Exception e){}
 	           		intent.putExtra("messageFrom", msg.getSender());
 	           		intent.putExtra("message", msg.getMessage());
 	           		String location = msg.getLocation();
@@ -221,7 +233,7 @@ public class UnreadMessages extends Fragment {
     	    else{
     	    	holder.txtsender.setText(listMessages.get(position).getSender());
     	    }    	    
-    	    holder.txtdetails.setText(listMessages.get(position).getReceiver() + " " + uriString);
+    	    holder.txtdetails.setText("Message sent at: " + listMessages.get(position).getTimestamp());
     	    if (listMessages.get(position).getStatus()==MessageState.UNREAD && typeMessage != 2){
     	    	holder.txtsender.setTypeface(Typeface.SANS_SERIF,Typeface.BOLD);
     	    	holder.linearLayout.setBackgroundColor(Color.parseColor("#FFFFFF"));

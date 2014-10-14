@@ -1,5 +1,7 @@
 package unimelb.mit.mobile.scavengerhunt;
 
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,6 +18,15 @@ public class Congratulations extends Activity {
 		TextView mMessageFrom = (TextView) findViewById(R.id.txtLabelYourMessage);
 		TextView mMessage = (TextView) findViewById(R.id.txtMessage);
         if (extras != null) {
+        	String id = extras.getString("message_id");
+        	MessageDAO messageDAO = new MessageDAO();
+        	Message msg=messageDAO.getMessagesById(id);
+        	msg.setStatus(MessageState.DISCOVERED);
+        	Calendar calendar = Calendar.getInstance();
+        	java.util.Date now = calendar.getTime();
+        	java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
+        	msg.setDiscoveredTime(currentTimestamp);
+        	messageDAO.updateMessage(msg);
             mMessageFrom.setText("Your message from " + extras.getString("messageFrom") + ":");
             mMessage.setText(extras.getString("message"));
         }

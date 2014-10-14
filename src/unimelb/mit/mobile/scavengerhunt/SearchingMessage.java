@@ -54,6 +54,7 @@ public class SearchingMessage extends FragmentActivity
     private String hint3;
     private String messageFrom;
     private String message;
+    private String messageText;
     private String id;
     private int showedHint = 1;
     
@@ -80,7 +81,7 @@ public class SearchingMessage extends FragmentActivity
             hint1 = extras.getString("hint1");
             hint2 = extras.getString("hint2");
             hint3 = extras.getString("hint3");
-            message = extras.getString("message");
+            messageText = extras.getString("message");
             messageFrom = extras.getString("messageFrom");            
             latitudeTargetLocation = Double.parseDouble(extras.getString("targetLatitude"));
             longitudeTargetLocation = Double.parseDouble(extras.getString("targetLongitude"));
@@ -191,30 +192,30 @@ public class SearchingMessage extends FragmentActivity
         targetLocation.setLongitude(longitudeTargetLocation);
         
         float distance = location.distanceTo(targetLocation);
-        String message = "";        
+        //String message = "";        
         
-        if (distance<10){
+        if (distance<40){
         	//message = "You got it. Press the button to see the message!";
         	Intent intent = new Intent(this, Congratulations.class);
         	intent.putExtra("messageFrom", messageFrom);
-    		intent.putExtra("message", message);
+    		intent.putExtra("message", messageText);
+    		intent.putExtra("message_id", id);
     		startActivity(intent);
-        	v.cancel();
-        }
-        else if (distance<50)
-        {
-        	message = "You are almost there. Distance: " + distance;
-        	v.vibrate(2000);
-        	v.cancel();
+        	//v.cancel();
         }
         else if (distance<100)
         {
-        	message = "You are getting closer. Distance: " + distance;
-        	v.vibrate(2000);
-        	v.cancel();
+        	message = "You are almost there. Distance: " + distance;
+        	v.vibrate(5000);
+        	//v.cancel();
         }
-        else{
-        	v.cancel();
+        else if (distance<200)
+        {
+        	message = "You are getting closer. Distance: " + distance;
+        	v.vibrate(5000);
+        	//v.cancel();
+        }
+        else{        	//
         	message = "Keep searching. Distance: " + distance;        	
         }
         mMessageView.setText(message);
