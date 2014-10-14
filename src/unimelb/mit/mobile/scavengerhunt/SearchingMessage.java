@@ -104,6 +104,8 @@ public class SearchingMessage extends FragmentActivity
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(targetCameraPosition));
         v = (Vibrator) SearchingMessage.this.getSystemService(Context.VIBRATOR_SERVICE);
         
+        
+        
     }
 
     @Override

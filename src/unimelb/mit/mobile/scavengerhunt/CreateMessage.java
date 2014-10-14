@@ -7,10 +7,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import android.support.v7.app.ActionBarActivity;
 import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,7 +19,20 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class CreateMessage extends ActionBarActivity {
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
+import com.google.android.gms.maps.model.LatLng;
+
+public class CreateMessage extends ActionBarActivity implements 
+		ConnectionCallbacks,
+		OnConnectionFailedListener, 
+		LocationListener, 
+		OnMyLocationButtonClickListener {
 
 	private EditText messageText;
 	private EditText messageHint1;
@@ -32,6 +46,17 @@ public class CreateMessage extends ActionBarActivity {
 	private String sender;
 	private String receiver;
 	private List<String> hints;
+	
+	//For location From Chavi
+	private LatLng currentLocation;
+	private LocationClient mLocationClient;
+	
+    // These settings are the same as the settings for the map. They will in fact give you updates
+    // at the maximal rates currently possible.
+    private static final LocationRequest REQUEST = LocationRequest.create()
+            .setInterval(3000)         // 5 seconds
+            .setFastestInterval(16)    // 16ms = 60fps
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +91,8 @@ public class CreateMessage extends ActionBarActivity {
 		//Now the hints
 		hints = new ArrayList<String>();
 		
+		mLocationClient = new LocationClient(this, this, this);
+		
 		
 	}
 
@@ -95,6 +122,8 @@ public class CreateMessage extends ActionBarActivity {
 		AsyncTask<Message, Void, Boolean> messageDB = new dbCreateMessage();
 		boolean messageSavedOK = false;
 		
+		Location currentLocation;
+		
 		//Insert Message
 		try {
 			//Code for generating timestamps Refactor and put it in a general class
@@ -110,7 +139,16 @@ public class CreateMessage extends ActionBarActivity {
 			hints.add(messageHint3.getText().toString());
 
 			
-			Message m = new Message(messageText.getText().toString(), sender, receiver, MessageState.UNREAD, MessageNotificationState.UNNOTIFIED, "0001,0002", stamp, hints);
+			currentLocation = mLocationClient.getLastLocation();
+			
+			String messageLocation = null;
+			if(currentLocation!= null)
+			{
+			messageLocation = currentLocation.getLatitude() + "," + currentLocation.getLongitude();
+			}
+			
+			
+			Message m = new Message(messageText.getText().toString(), sender, receiver, MessageState.UNREAD, MessageNotificationState.UNNOTIFIED, messageLocation, stamp, hints);
 			
 			messageSavedOK = messageDB.execute(m).get();
 				
@@ -128,4 +166,69 @@ public class CreateMessage extends ActionBarActivity {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public void onLocationChanged(Location location) {
+		// TODO Auto-generated method stub
+		currentLocation = new LatLng(location.getLatitude(), location.getLongitude());
+		
+		
+	}
+	
+    /**
+     * Callback called when connected to GCore. Implementation of {@link ConnectionCallbacks}.
+     */
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        mLocationClient.requestLocationUpdates(
+                REQUEST,
+                this);  // LocationListener
+    }
+
+    private void setUpLocationClientIfNeeded() {
+        if (mLocationClient == null) {
+            mLocationClient = new LocationClient(
+                    getApplicationContext(),
+                    this,  // ConnectionCallbacks
+                    this); // OnConnectionFailedListener
+        }
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //setUpMapIfNeeded();
+        setUpLocationClientIfNeeded();
+        mLocationClient.connect();
+    }
+    
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mLocationClient != null) {
+            mLocationClient.disconnect();
+        }
+    }
+
+	@Override
+	public boolean onMyLocationButtonClick() {
+		// TODO Auto-generated method stub
+        Toast.makeText(this, "Showing current location.", Toast.LENGTH_SHORT).show();
+        // Return false so that we don't consume the event and the default behavior still occurs
+        // (the camera animates to the user's current position).
+        return false;
+	}
+
+	@Override
+	public void onConnectionFailed(ConnectionResult arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onDisconnected() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }
