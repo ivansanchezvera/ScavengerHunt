@@ -8,13 +8,10 @@ import java.util.Random;
 import android.content.SharedPreferences;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -103,18 +100,25 @@ public class UnreadMessages extends Fragment {
 	           		String hint1;
 	           		String hint2;
 	           		String hint3;
+	           		
 	           		try{
-	           			intent.putExtra("hint1", msg.getHints().get(0));
-	           		}
-	           		catch(Exception e){}
+	           			hint1=msg.getHints().get(0);
+	           		}	           		
+	           		catch(Exception e){hint1="";}
+	           		intent.putExtra("hint1", hint1);
+	           		
 	           		try{
-	           			intent.putExtra("hint2", msg.getHints().get(1));
+	           			hint2=msg.getHints().get(2);	           			
 	           		}
-	           		catch(Exception e){}
+	           		catch(Exception e){hint2="";}
+	           		intent.putExtra("hint2", hint2);
+	           		
 	           		try{
-	           			intent.putExtra("hint3", msg.getHints().get(2));
+	           			hint3=msg.getHints().get(2);
 	           		}
-	           		catch(Exception e){}
+	           		catch(Exception e){hint3="";}
+	           		intent.putExtra("hint3", hint3);
+	           		
 	           		intent.putExtra("messageFrom", msg.getSender());
 	           		intent.putExtra("message", msg.getMessage());
 	           		String location = msg.getLocation();

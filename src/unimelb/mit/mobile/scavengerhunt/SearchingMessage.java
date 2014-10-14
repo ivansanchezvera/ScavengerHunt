@@ -25,10 +25,8 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 
 /**
  * This shows how to draw polylines on a map.
