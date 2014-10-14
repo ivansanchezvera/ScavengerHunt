@@ -203,22 +203,35 @@ public class SearchingMessage extends FragmentActivity
     		intent.putExtra("message", messageText);
     		intent.putExtra("message_id", id);
     		startActivity(intent);
-        	//v.cancel();
+        	v.cancel();
         }
         else if (distance<100)
         {
         	message = "You are almost there. Distance: " + distance;
-        	v.vibrate(5000);
-        	//v.cancel();
+        	v.vibrate(1000);
+        	try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	v.cancel();
         }
         else if (distance<200)
         {
         	message = "You are getting closer. Distance: " + distance;
-        	v.vibrate(5000);
-        	//v.cancel();
+        	v.vibrate(1000);
+        	try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	v.cancel();
         }
         else{        	//
-        	message = "Keep searching. Distance: " + distance;        	
+        	message = "Keep searching. Distance: " + distance;
+        	v.cancel();
         }
         mMessageView.setText(message);
     }
