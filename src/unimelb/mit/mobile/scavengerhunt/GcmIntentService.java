@@ -74,16 +74,20 @@ public class GcmIntentService extends IntentService {
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
  
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainActivity.class), 0);
+                new Intent(this, Inbox.class), 0);
  
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
-       // .setSmallIcon(R.drawable.ic_stat_gcm)
-        .setContentTitle("ScavengerHunt")
-        .setSmallIcon(R.drawable.ic_launcher)
+
+        .setAutoCancel(true)
+        .setContentTitle("Scavenger Hunt")
+        .setSmallIcon(R.drawable.scavenger)
+        .setSmallIcon(R.drawable.scavenger)
+        
         .setStyle(new NotificationCompat.BigTextStyle()
         .bigText(msg))
         .setContentText(msg)
+        
         .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS);
  
         mBuilder.setContentIntent(contentIntent);

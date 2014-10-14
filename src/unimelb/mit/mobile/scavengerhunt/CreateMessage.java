@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -34,7 +35,12 @@ public class CreateMessage extends ActionBarActivity implements
 		OnMyLocationButtonClickListener {
 
 	private EditText messageText;
-	private EditText messageHint;	
+	private EditText messageHint1;
+	private EditText messageHint2;
+	private EditText messageHint3;
+	private TextView latitude;
+	private TextView longitude;
+
 	private EditText recipientNameText;
 	public static final String AUTHPREFS = "authPrefs" ;
 	private String sender;
@@ -58,8 +64,15 @@ public class CreateMessage extends ActionBarActivity implements
 		setContentView(R.layout.activity_create_message);
 		
 		messageText = (EditText) findViewById(R.id.messageText);
-		messageHint = (EditText) findViewById(R.id.messageHintText);
+		messageHint1 = (EditText) findViewById(R.id.locHint1);
+		messageHint2 = (EditText) findViewById(R.id.locHint2);
+		messageHint3 = (EditText) findViewById(R.id.locHint3);
 		recipientNameText = (EditText) findViewById(R.id.recipientUsernameText);
+		
+		latitude = (TextView) findViewById(R.id.msgLatitude);
+		longitude = (TextView) findViewById(R.id.msgLongitude);
+
+		
 		
 		//Get Receiver information from Contacts Activity
 		receiver = getIntent().getStringExtra("recipientEmail");
@@ -70,7 +83,6 @@ public class CreateMessage extends ActionBarActivity implements
 		//GetSender and Receiver from previous activity
 		// Restore preferences to get username global variable
 	       SharedPreferences settings = getSharedPreferences(AUTHPREFS, 0);
-	       boolean silent = settings.getBoolean("silentMode", false);
 		
 	    //Manage this error, what happens when there is not preference
 	    //for this key and the default value is taken. This should not happen
@@ -122,7 +134,10 @@ public class CreateMessage extends ActionBarActivity implements
 			Timestamp stamp = new Timestamp(myDate.getTime());	
 			
 			//Get hints form screen
-			hints.add(messageHint.getText().toString());
+			hints.add(messageHint1.getText().toString());
+			hints.add(messageHint2.getText().toString());
+			hints.add(messageHint3.getText().toString());
+
 			
 			currentLocation = mLocationClient.getLastLocation();
 			
